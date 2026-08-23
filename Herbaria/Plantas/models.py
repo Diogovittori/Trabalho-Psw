@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 
 
 class Categoria(models.Model):
@@ -15,17 +15,10 @@ class Categoria(models.Model):
 
 
 class Planta(models.Model):
-    class Status(models.TextChoices):
-        ATIVA = "ativa", "Ativa"
-        INATIVA = "inativa", "Inativa"
-
     nome_cientifico = models.CharField("nome científico", max_length=150)
     nome_popular = models.CharField("nome popular", max_length=150)
     descricao = models.TextField("descrição")
     data_cadastro = models.DateField("data de cadastro", auto_now_add=True)
-    status = models.CharField(
-        "status", max_length=7, choices=Status.choices, default=Status.ATIVA
-    )
     data_plantio = models.DateField("data de plantio", null=True, blank=True)
     categoria = models.ForeignKey(
         Categoria,
@@ -44,13 +37,26 @@ class Planta(models.Model):
 
 
 class Cuidados(models.Model):
+    TIPOS = (
+        ("regar_muito", "Regar muito"),
+        ("regar_moderadamente", "Regar moderadamente"),
+        ("regar_pouco", "Regar pouco"),
+        ("fertilizar", "Adicionar fertilizante"),
+        ("podar", "Podar regularmente"),
+        ("luz_direta", "Manter sob luz direta"),
+        ("luz_indireta", "Manter em lugar iluminado"),
+        ("sombra", "Manter em local sombreado"),
+        ("controlar_pragas", "Controlar pragas"),
+        ("trocar_substrato", "Trocar o substrato"),
+    )
+
     planta = models.ForeignKey(
         Planta,
         on_delete=models.CASCADE,
         related_name="cuidados",
         verbose_name="planta",
     )
-    tipo = models.BooleanField("cuidado realizado", default=False)
+    tipo = models.JSONField("tipos de cuidado", default=list)
     data = models.DateField("data")
     observacoes = models.TextField("observações", blank=True)
 
@@ -60,8 +66,16 @@ class Cuidados(models.Model):
         ordering = ("-data",)
 
     def __str__(self):
-        situacao = "realizado" if self.tipo else "pendente"
-        return f"{self.planta.nome_popular} — {situacao} em {self.data:%d/%m/%Y}"
+        return (
+            f"{self.planta.nome_popular} — {self.get_tipos_display()} "
+            f"em {self.data:%d/%m/%Y}"
+        )
+
+    def get_tipos_display(self):
+        nomes = dict(self.TIPOS)
+        return ", ".join(nomes.get(tipo, tipo) for tipo in self.tipo)
+
+    get_tipos_display.short_description = "cuidados"
 
 
 class Fotografia(models.Model):

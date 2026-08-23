@@ -1,0 +1,11 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Cuidados | Herbaria{% endblock %}
+{% block content %}
+<h2>Cuidados</h2>
+<a class="acoes" href="{% url 'plantas:cuidado_criar' %}">Novo cuidado</a>
+<table><thead><tr><th>Planta</th><th>Data</th><th>Cuidado</th><th>Observações</th><th></th></tr></thead><tbody>
+{% for cuidado in cuidados %}
+<tr><td>{{ cuidado.planta }}</td><td>{{ cuidado.data|date:"d/m/Y" }}</td><td>{{ cuidado.get_tipos_display }}</td><td>{{ cuidado.observacoes|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:cuidado_detalhar' cuidado.pk %}">Visualizar</a><a class="botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a><a class="botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a></td></tr>
+{% empty %}<tr><td colspan="5">Nenhum cuidado cadastrado.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

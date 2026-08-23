@@ -1,0 +1,14 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Excluir {{ tipo }} | Herbaria{% endblock %}
+{% block content %}
+<h2>Excluir {{ tipo }}</h2>
+<div class="detalhes">
+    <p>Tem certeza de que deseja excluir <strong>{{ objeto }}</strong>?</p>
+    <p>Essa ação não poderá ser desfeita.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="excluir" type="submit">Sim, excluir</button>
+        <a class="botao cancelar" href="javascript:history.back()">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

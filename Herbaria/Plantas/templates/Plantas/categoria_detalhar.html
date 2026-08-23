@@ -1,0 +1,7 @@
+{% extends "Plantas/base.html" %}
+{% block title %}{{ categoria.nome }} | Herbaria{% endblock %}
+{% block content %}
+<h2>{{ categoria.nome }}</h2>
+<dl class="detalhes"><dt>Descrição</dt><dd>{{ categoria.descricao|default:"—" }}</dd><dt>Plantas cadastradas</dt><dd>{{ categoria.plantas.count }}</dd></dl>
+<p><a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a> <a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a></p>
+{% endblock %}

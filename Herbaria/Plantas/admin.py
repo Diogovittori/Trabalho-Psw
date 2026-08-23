@@ -19,11 +19,10 @@ class PlantaAdmin(admin.ModelAdmin):
         "nome_popular",
         "nome_cientifico",
         "categoria",
-        "status",
         "data_plantio",
         "data_cadastro",
     )
-    list_filter = ("status", "categoria", "data_cadastro", "data_plantio")
+    list_filter = ("categoria", "data_cadastro", "data_plantio")
     search_fields = ("nome_popular", "nome_cientifico", "descricao")
     autocomplete_fields = ("categoria",)
     date_hierarchy = "data_cadastro"
@@ -38,8 +37,8 @@ class CategoriaAdmin(admin.ModelAdmin):
 
 @admin.register(Cuidados)
 class CuidadosAdmin(admin.ModelAdmin):
-    list_display = ("planta", "tipo", "data")
-    list_filter = ("tipo", "data")
+    list_display = ("planta", "get_tipos_display", "data")
+    list_filter = ("data",)
     search_fields = ("planta__nome_popular", "observacoes")
     autocomplete_fields = ("planta",)
     date_hierarchy = "data"

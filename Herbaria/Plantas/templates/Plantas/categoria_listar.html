@@ -1,0 +1,11 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Categorias | Herbaria{% endblock %}
+{% block content %}
+<h2>Categorias</h2>
+<a class="acoes" href="{% url 'plantas:categoria_criar' %}">Nova categoria</a>
+<table><thead><tr><th>Nome</th><th>Descrição</th><th>Plantas</th><th></th></tr></thead><tbody>
+{% for categoria in categorias %}
+<tr><td>{{ categoria.nome }}</td><td>{{ categoria.descricao|default:"—" }}</td><td>{{ categoria.plantas.count }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:categoria_detalhar' categoria.pk %}">Visualizar</a><a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a><a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a></td></tr>
+{% empty %}<tr><td colspan="4">Nenhuma categoria cadastrada.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

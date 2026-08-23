@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from plantas.models import Categoria, Planta
+from Plantas.models import Categoria, Planta
 
 from .models import Pessoa
 

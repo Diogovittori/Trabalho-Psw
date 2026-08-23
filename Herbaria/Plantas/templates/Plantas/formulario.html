@@ -1,0 +1,10 @@
+{% extends "Plantas/base.html" %}
+{% block title %}{{ titulo }} | Herbaria{% endblock %}
+{% block content %}
+<h2>{{ titulo }}</h2>
+<form method="post"{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+</form>
+{% endblock %}

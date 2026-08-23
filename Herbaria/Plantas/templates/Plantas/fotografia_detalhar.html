@@ -1,0 +1,7 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Fotografia de {{ fotografia.planta.nome_popular }} | Herbaria{% endblock %}
+{% block content %}
+<h2>Fotografia de {{ fotografia.planta.nome_popular }}</h2>
+<div class="detalhes"><p><img src="{{ fotografia.imagem.url }}" alt="{{ fotografia.planta.nome_popular }}" style="max-width: 100%; max-height: 500px;"></p><dl><dt>Planta</dt><dd>{{ fotografia.planta }}</dd><dt>Data da foto</dt><dd>{{ fotografia.data_foto|date:"d/m/Y" }}</dd></dl></div>
+<p><a class="botao editar" href="{% url 'plantas:fotografia_editar' fotografia.pk %}">Editar</a> <a class="botao excluir" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a></p>
+{% endblock %}
