@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.db.models.deletion import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CategoriaForm, CuidadosForm, FotografiaForm, PlantaForm
@@ -56,15 +55,8 @@ def categoria_editar(request, pk):
 def categoria_excluir(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == "POST":
-        try:
-            categoria.delete()
-        except ProtectedError:
-            messages.error(
-                request,
-                "Não é possível excluir uma categoria que possui plantas.",
-            )
-        else:
-            messages.success(request, "Categoria excluída com sucesso.")
+        categoria.delete()
+        messages.success(request, "Categoria excluída com sucesso.")
         return redirect("plantas:categoria_listar")
     return render(
         request,

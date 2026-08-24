@@ -2,6 +2,6 @@
 {% block title %}{{ planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
 <h2>{{ planta.nome_popular }}</h2>
-<dl class="detalhes"><dt>Nome científico</dt><dd><em>{{ planta.nome_cientifico }}</em></dd><dt>Categoria</dt><dd>{{ planta.categoria }}</dd><dt>Descrição</dt><dd>{{ planta.descricao }}</dd><dt>Data de plantio</dt><dd>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</dd><dt>Data de cadastro</dt><dd>{{ planta.data_cadastro|date:"d/m/Y" }}</dd><dt>Cuidados cadastrados</dt><dd>{{ planta.cuidados.count }}</dd><dt>Fotografias cadastradas</dt><dd>{{ planta.fotografias.count }}</dd></dl>
+<dl class="detalhes"><dt>Nome científico</dt><dd><em>{{ planta.nome_cientifico }}</em></dd><dt>Categoria</dt><dd>{{ planta.categoria|default:"Sem categoria" }}</dd><dt>Descrição</dt><dd>{{ planta.descricao }}</dd><dt>Data de plantio</dt><dd>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</dd><dt>Data de cadastro</dt><dd>{{ planta.data_cadastro|date:"d/m/Y" }}</dd><dt>Cuidados cadastrados</dt><dd>{{ planta.cuidados.count }}</dd><dt>Fotografias cadastradas</dt><dd>{{ planta.fotografias.count }}</dd></dl>
 <p><a class="botao editar" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a> <a class="botao excluir" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a></p>
 {% endblock %}

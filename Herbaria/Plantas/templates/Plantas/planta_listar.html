@@ -1,11 +1,11 @@
-python manage.py runserver{% extends "Plantas/base.html" %}
+{% extends "Plantas/base.html" %}
 {% block title %}Plantas | Herbaria{% endblock %}
 {% block content %}
 <h2>Plantas</h2>
 <a class="acoes" href="{% url 'plantas:planta_criar' %}">Nova planta</a>
-<table><thead><tr><th>Nome popular</th><th>Nome científico</th><th>Categoria</th><th>Status</th><th>Plantio</th></tr></thead><tbody>
+<table><thead><tr><th>Nome popular</th><th>Nome científico</th><th>Categoria</th><th>Plantio</th><th></th></tr></thead><tbody>
 {% for planta in plantas %}
-<tr><td>{{ planta.nome_popular }}</td><td><em>{{ planta.nome_cientifico }}</em></td><td>{{ planta.categoria }}</td><td>{{ planta.get_status_display }}</td><td>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</td></tr>
+<tr><td>{{ planta.nome_popular }}</td><td><em>{{ planta.nome_cientifico }}</em></td><td>{{ planta.categoria|default:"Sem categoria" }}</td><td>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:planta_detalhar' planta.pk %}">Visualizar</a><a class="botao editar" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a><a class="botao excluir" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a></td></tr>
 {% empty %}<tr><td colspan="5">Nenhuma planta cadastrada.</td></tr>{% endfor %}
 </tbody></table>
 {% endblock %}

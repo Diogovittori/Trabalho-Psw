@@ -22,7 +22,9 @@ class Planta(models.Model):
     data_plantio = models.DateField("data de plantio", null=True, blank=True)
     categoria = models.ForeignKey(
         Categoria,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="plantas",
         verbose_name="categoria",
     )

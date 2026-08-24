@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.db.models.deletion import ProtectedError
 from django.test import TestCase
 from django.urls import reverse
 
@@ -37,9 +36,11 @@ class PlantaModelTests(TestCase):
         self.assertEqual(list(self.planta.cuidados.all()), [cuidado])
         self.assertEqual(list(self.planta.fotografias.all()), [fotografia])
 
-    def test_categoria_em_uso_nao_pode_ser_excluida(self):
-        with self.assertRaises(ProtectedError):
-            self.categoria.delete()
+    def test_categoria_em_uso_pode_ser_excluida_sem_apagar_planta(self):
+        self.categoria.delete()
+
+        self.planta.refresh_from_db()
+        self.assertIsNone(self.planta.categoria)
 
 
 class PlantaViewTests(TestCase):
@@ -174,13 +175,14 @@ class PlantaViewTests(TestCase):
             reverse("plantas:categoria_excluir", args=[self.categoria.pk])
         )
         self.assertRedirects(resposta, reverse("plantas:categoria_listar"))
-        self.assertTrue(Categoria.objects.filter(pk=self.categoria.pk).exists())
+        self.assertFalse(Categoria.objects.filter(pk=self.categoria.pk).exists())
+        planta.refresh_from_db()
+        self.assertIsNone(planta.categoria)
 
         for nome, objeto, modelo in (
             ("fotografia", fotografia, Fotografia),
             ("cuidado", cuidado, Cuidados),
             ("planta", planta, Planta),
-            ("categoria", self.categoria, Categoria),
         ):
             with self.subTest(excluir=nome):
                 resposta = self.client.post(

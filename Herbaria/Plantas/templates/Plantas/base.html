@@ -1,34 +1,11 @@
+{% load static %}
 <!doctype html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Herbaria{% endblock %}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7f2; color: #203022; }
-        header { background: #315c3b; color: white; padding: 1rem 2rem; }
-        nav a { color: white; margin-right: 1rem; }
-        main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
-        .acoes { display: inline-block; padding: .65rem 1rem; background: #315c3b; color: white; text-decoration: none; border-radius: 4px; }
-        .acoes-tabela { white-space: nowrap; }
-        .botao { display: inline-block; padding: .4rem .6rem; margin: .1rem; color: white; text-decoration: none; border-radius: 4px; font-size: .85rem; }
-        .visualizar { background: #3572a5; }
-        .editar { background: #967117; }
-        .excluir { background: #a83232; }
-        .cancelar { background: #69736b; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; }
-        th, td { padding: .75rem; border-bottom: 1px solid #ddd; text-align: left; }
-        form { max-width: 620px; padding: 1.5rem; background: white; border-radius: 6px; }
-        form p { display: grid; gap: .3rem; }
-        input, select, textarea { padding: .55rem; border: 1px solid #aaa; border-radius: 4px; }
-        .helptext { display: block; margin-top: .75rem; color: #526354; font-size: .9rem; font-weight: bold; }
-        button { padding: .7rem 1rem; border: 0; border-radius: 4px; background: #315c3b; color: white; cursor: pointer; }
-        .mensagem { padding: .75rem; background: #dff0df; border-radius: 4px; }
-        .detalhes { background: white; padding: 1.5rem; border-radius: 6px; }
-        .detalhes dt { font-weight: bold; margin-top: .8rem; }
-        .detalhes dd { margin: .25rem 0 0; }
-        img { max-width: 120px; max-height: 90px; object-fit: cover; }
-    </style>
+    <link rel="stylesheet" href="{% static 'Plantas/style.css' %}">
 </head>
 <body>
 <header>

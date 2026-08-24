@@ -33,7 +33,6 @@ class Migration(migrations.Migration):
                 ('nome_popular', models.CharField(max_length=150, verbose_name='nome popular')),
                 ('descricao', models.TextField(verbose_name='descrição')),
                 ('data_cadastro', models.DateField(auto_now_add=True, verbose_name='data de cadastro')),
-                ('status', models.CharField(choices=[('ativa', 'Ativa'), ('inativa', 'Inativa')], default='ativa', max_length=7, verbose_name='status')),
                 ('data_plantio', models.DateField(blank=True, null=True, verbose_name='data de plantio')),
                 ('categoria', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='plantas', to='plantas.categoria', verbose_name='categoria')),
             ],
@@ -61,7 +60,7 @@ class Migration(migrations.Migration):
             name='Cuidados',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tipo', models.BooleanField(default=False, verbose_name='cuidado realizado')),
+                ('tipo', models.JSONField(default=list, verbose_name='tipos de cuidado')),
                 ('data', models.DateField(verbose_name='data')),
                 ('observacoes', models.TextField(blank=True, verbose_name='observações')),
                 ('planta', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cuidados', to='plantas.planta', verbose_name='planta')),
