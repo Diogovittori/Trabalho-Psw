@@ -1,24 +1,28 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import Pessoa
 
 
 @admin.register(Pessoa)
-class PessoaAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "nome", "cpf", "email", "cidade")
+class PessoaAdmin(UserAdmin):
+    list_display = ("username", "nome", "cpf", "email", "cidade")
     list_filter = ("sexo", "estado")
     search_fields = (
-        "usuario__username",
-        "usuario__first_name",
-        "usuario__last_name",
-        "usuario__email",
+        "username",
+        "first_name",
+        "last_name",
+        "email",
         "cpf",
         "telefone",
     )
-    autocomplete_fields = ("usuario",)
-    filter_horizontal = ("plantas",)
+    filter_horizontal = ("groups", "user_permissions", "plantas")
     fieldsets = (
-        ("Usuário", {"fields": ("usuario",)}),
+        ("Usuário", {"fields": ("username", "password")} ),
+        (
+            "Informações pessoais",
+            {"fields": ("first_name", "last_name", "email")},
+        ),
         (
             "Dados pessoais",
             {
@@ -35,12 +39,30 @@ class PessoaAdmin(admin.ModelAdmin):
             {"fields": ("numero", "bairro", "cidade", "estado", "cep")},
         ),
         ("Herbário", {"fields": ("plantas",)}),
+        (
+            "Permissões",
+            {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")},
+        ),
+        ("Datas importantes", {"fields": ("last_login", "date_joined")}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "password1",
+                    "password2",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "cpf",
+                ),
+            },
+        ),
     )
 
-    @admin.display(description="nome", ordering="usuario__first_name")
+    @admin.display(description="nome", ordering="first_name")
     def nome(self, pessoa):
-        return pessoa.usuario.get_full_name()
-
-    @admin.display(description="e-mail", ordering="usuario__email")
-    def email(self, pessoa):
-        return pessoa.usuario.email
+        return pessoa.get_full_name()

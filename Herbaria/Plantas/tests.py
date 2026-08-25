@@ -3,7 +3,7 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Categoria, Cuidados, Fotografia, Planta
+from .models import Categoria, Cuidados, Fotografia, Planta, TipoDeCuidado
 
 
 class PlantaModelTests(TestCase):
@@ -22,9 +22,13 @@ class PlantaModelTests(TestCase):
     def test_relacionamentos_da_planta(self):
         cuidado = Cuidados.objects.create(
             planta=self.planta,
-            tipo=["regar_moderadamente", "luz_indireta"],
             data=date(2026, 8, 18),
             observacoes="Rega concluída.",
+        )
+        cuidado.tipo.set(
+            TipoDeCuidado.objects.filter(
+                codigo__in=("regar_moderadamente", "luz_indireta")
+            )
         )
         fotografia = Fotografia.objects.create(
             planta=self.planta,
@@ -64,7 +68,11 @@ class PlantaViewTests(TestCase):
         resposta = self.client.get(reverse("plantas:cuidado_criar"))
 
         self.assertEqual(resposta.status_code, 200)
-        self.assertContains(resposta, 'type="checkbox"', count=len(Cuidados.TIPOS))
+        self.assertContains(
+            resposta,
+            'type="checkbox"',
+            count=TipoDeCuidado.objects.count(),
+        )
         self.assertContains(resposta, "Selecione uma opção")
 
     def test_cria_categoria(self):
@@ -100,16 +108,20 @@ class PlantaViewTests(TestCase):
             reverse("plantas:cuidado_criar"),
             {
                 "planta": planta.pk,
-                "tipo": ["regar_pouco", "luz_indireta"],
+                "tipo": list(
+                    TipoDeCuidado.objects.filter(
+                        codigo__in=("regar_pouco", "luz_indireta")
+                    ).values_list("pk", flat=True)
+                ),
                 "data": "2026-08-23",
                 "observacoes": "Rega realizada.",
             },
         )
         self.assertRedirects(resposta, reverse("plantas:cuidado_listar"))
-        self.assertTrue(
-            Cuidados.objects.filter(
-                planta=planta, tipo=["regar_pouco", "luz_indireta"]
-            ).exists()
+        cuidado = Cuidados.objects.get(planta=planta)
+        self.assertEqual(
+            set(cuidado.tipo.values_list("codigo", flat=True)),
+            {"regar_pouco", "luz_indireta"},
         )
 
     def test_crud_completo_das_entidades(self):
@@ -121,8 +133,10 @@ class PlantaViewTests(TestCase):
         )
         cuidado = Cuidados.objects.create(
             planta=planta,
-            tipo=["regar_moderadamente"],
             data=date(2026, 8, 23),
+        )
+        cuidado.tipo.set(
+            TipoDeCuidado.objects.filter(codigo="regar_moderadamente")
         )
         fotografia = Fotografia.objects.create(
             planta=planta,

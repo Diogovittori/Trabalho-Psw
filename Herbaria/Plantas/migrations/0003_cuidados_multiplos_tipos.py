@@ -11,6 +11,7 @@ def copiar_tipo_existente(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("plantas", "0002_alterar_tipos_de_cuidado_remover_status"),
+        ("plantas", "0002_alter_planta_categoria"),
     ]
 
     operations = [

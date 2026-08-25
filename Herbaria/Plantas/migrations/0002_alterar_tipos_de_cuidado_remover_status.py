@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
     dependencies = [("plantas", "0001_initial")]
 
     operations = [
-        migrations.RemoveField(model_name="planta", name="status"),
         migrations.AlterField(
             model_name="cuidados",
             name="tipo",

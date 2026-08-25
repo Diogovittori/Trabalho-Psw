@@ -1,20 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
-class Pessoa(models.Model):
+class Pessoa(User):
     class Sexo(models.TextChoices):
         FEMININO = "F", "Feminino"
         MASCULINO = "M", "Masculino"
         OUTRO = "O", "Outro"
         NAO_INFORMADO = "N", "Prefiro não informar"
 
-    usuario = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name="pessoa",
-        verbose_name="usuário",
-    )
     cpf = models.CharField("CPF", max_length=14, unique=True)
     data_nascimento = models.DateField(
         "data de nascimento", null=True, blank=True
@@ -35,7 +28,7 @@ class Pessoa(models.Model):
     class Meta:
         verbose_name = "pessoa"
         verbose_name_plural = "pessoas"
-        ordering = ("usuario__first_name", "usuario__username")
+        ordering = ("first_name", "username")
 
     def __str__(self):
-        return self.usuario.get_full_name() or self.usuario.username
+        return self.get_full_name() or self.username

@@ -17,7 +17,7 @@ class PessoaModelTests(TestCase):
         pessoa = Pessoa.objects.create_user(
             username="ana",
             password="senha-segura",
-            nome="Ana",
+            first_name="Ana",
             cpf="123.456.789-00",
             email="ana@example.com",
         )

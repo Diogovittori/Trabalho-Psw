@@ -38,19 +38,20 @@ class Planta(models.Model):
         return f"{self.nome_popular} ({self.nome_cientifico})"
 
 
+class TipoDeCuidado(models.Model):
+    codigo = models.CharField("código", max_length=30, unique=True)
+    nome = models.CharField("nome", max_length=100)
+
+    class Meta:
+        verbose_name = "tipo de cuidado"
+        verbose_name_plural = "tipos de cuidado"
+        ordering = ("nome",)
+
+    def __str__(self):
+        return self.nome
+
+
 class Cuidados(models.Model):
-    TIPOS = (
-        ("regar_muito", "Regar muito"),
-        ("regar_moderadamente", "Regar moderadamente"),
-        ("regar_pouco", "Regar pouco"),
-        ("fertilizar", "Adicionar fertilizante"),
-        ("podar", "Podar regularmente"),
-        ("luz_direta", "Manter sob luz direta"),
-        ("luz_indireta", "Manter em lugar iluminado"),
-        ("sombra", "Manter em local sombreado"),
-        ("controlar_pragas", "Controlar pragas"),
-        ("trocar_substrato", "Trocar o substrato"),
-    )
 
     planta = models.ForeignKey(
         Planta,
@@ -58,7 +59,11 @@ class Cuidados(models.Model):
         related_name="cuidados",
         verbose_name="planta",
     )
-    tipo = models.JSONField("tipos de cuidado", default=list)
+    tipo = models.ManyToManyField(
+        TipoDeCuidado,
+        related_name="cuidados",
+        verbose_name="tipos de cuidado",
+    )
     data = models.DateField("data")
     observacoes = models.TextField("observações", blank=True)
 
@@ -74,8 +79,7 @@ class Cuidados(models.Model):
         )
 
     def get_tipos_display(self):
-        nomes = dict(self.TIPOS)
-        return ", ".join(nomes.get(tipo, tipo) for tipo in self.tipo)
+        return ", ".join(tipo.nome for tipo in self.tipo.all())
 
     get_tipos_display.short_description = "cuidados"
 
