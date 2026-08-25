@@ -20,11 +20,14 @@ def categoria_listar(request):
 
 
 def categoria_criar(request):
-    form = CategoriaForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Categoria cadastrada com sucesso.")
-        return redirect("plantas:categoria_listar")
+    if request.method == "POST":
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Categoria cadastrada com sucesso.")
+            return redirect("plantas:categoria_listar")
+    else:
+        form = CategoriaForm()
     return render(
         request,
         "Plantas/formulario.html",
@@ -43,11 +46,14 @@ def categoria_detalhar(request, pk):
 
 def categoria_editar(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
-    form = CategoriaForm(request.POST or None, instance=categoria)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Categoria atualizada com sucesso.")
-        return redirect("plantas:categoria_listar")
+    if request.method == "POST":
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Categoria atualizada com sucesso.")
+            return redirect("plantas:categoria_listar")
+    else:
+        form = CategoriaForm(instance=categoria)
     return render(
         request,
         "Plantas/formulario.html",
@@ -74,11 +80,14 @@ def planta_listar(request):
 
 
 def planta_criar(request):
-    form = PlantaForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Planta cadastrada com sucesso.")
-        return redirect("plantas:planta_listar")
+    if request.method == "POST":
+        form = PlantaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Planta cadastrada com sucesso.")
+            return redirect("plantas:planta_listar")
+    else:
+        form = PlantaForm()
     return render(
         request,
         "Plantas/formulario.html",
@@ -98,11 +107,14 @@ def planta_detalhar(request, pk):
 
 def planta_editar(request, pk):
     planta = get_object_or_404(Planta, pk=pk)
-    form = PlantaForm(request.POST or None, instance=planta)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Planta atualizada com sucesso.")
-        return redirect("plantas:planta_listar")
+    if request.method == "POST":
+        form = PlantaForm(request.POST, instance=planta)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Planta atualizada com sucesso.")
+            return redirect("plantas:planta_listar")
+    else:
+        form = PlantaForm(instance=planta)
     return render(
         request,
         "Plantas/formulario.html",
@@ -129,11 +141,14 @@ def cuidado_listar(request):
 
 
 def cuidado_criar(request):
-    form = CuidadosForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Cuidado cadastrado com sucesso.")
-        return redirect("plantas:cuidado_listar")
+    if request.method == "POST":
+        form = CuidadosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cuidado cadastrado com sucesso.")
+            return redirect("plantas:cuidado_listar")
+    else:
+        form = CuidadosForm()
     return render(
         request,
         "Plantas/formulario.html",
@@ -150,11 +165,14 @@ def cuidado_detalhar(request, pk):
 
 def cuidado_editar(request, pk):
     cuidado = get_object_or_404(Cuidados, pk=pk)
-    form = CuidadosForm(request.POST or None, instance=cuidado)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Cuidado atualizado com sucesso.")
-        return redirect("plantas:cuidado_listar")
+    if request.method == "POST":
+        form = CuidadosForm(request.POST, instance=cuidado)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cuidado atualizado com sucesso.")
+            return redirect("plantas:cuidado_listar")
+    else:
+        form = CuidadosForm(instance=cuidado)
     return render(
         request,
         "Plantas/formulario.html",
@@ -183,11 +201,14 @@ def fotografia_listar(request):
 
 
 def fotografia_criar(request):
-    form = FotografiaForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Fotografia cadastrada com sucesso.")
-        return redirect("plantas:fotografia_listar")
+    if request.method == "POST":
+        form = FotografiaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fotografia cadastrada com sucesso.")
+            return redirect("plantas:fotografia_listar")
+    else:
+        form = FotografiaForm()
     return render(
         request,
         "Plantas/formulario.html",
@@ -206,13 +227,16 @@ def fotografia_detalhar(request, pk):
 
 def fotografia_editar(request, pk):
     fotografia = get_object_or_404(Fotografia, pk=pk)
-    form = FotografiaForm(
-        request.POST or None, request.FILES or None, instance=fotografia
-    )
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Fotografia atualizada com sucesso.")
-        return redirect("plantas:fotografia_listar")
+    if request.method == "POST":
+        form = FotografiaForm(
+            request.POST, request.FILES, instance=fotografia
+        )
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fotografia atualizada com sucesso.")
+            return redirect("plantas:fotografia_listar")
+    else:
+        form = FotografiaForm(instance=fotografia)
     return render(
         request,
         "Plantas/formulario.html",

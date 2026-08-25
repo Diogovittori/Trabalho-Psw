@@ -1,12 +1,14 @@
 from datetime import date
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
 from Categoria.models import Categoria
-from Cuidados.models import Cuidados
+from Cuidados.models import Cuidados, TipoDeCuidado
 from Fotografia.models import Fotografia
-from .models import Planta
+from Pessoas.models import Pessoa
+from Plantas.models import Planta
 
 
 class PlantaModelTests(TestCase):
@@ -21,14 +23,17 @@ class PlantaModelTests(TestCase):
             data_plantio=date(2026, 1, 10),
             categoria=self.categoria,
         )
+        self.tipo = TipoDeCuidado.objects.create(
+            codigo="regar_moderadamente", nome="Regar moderadamente"
+        )
 
     def test_relacionamentos_da_planta(self):
         cuidado = Cuidados.objects.create(
             planta=self.planta,
-            tipo=True,
             data=date(2026, 8, 18),
             observacoes="Rega concluída.",
         )
+        cuidado.tipo.add(self.tipo)
         fotografia = Fotografia.objects.create(
             planta=self.planta,
             imagem="plantas/fotografias/costela.jpg",
@@ -45,11 +50,43 @@ class PlantaModelTests(TestCase):
         self.planta.refresh_from_db()
         self.assertIsNone(self.planta.categoria)
 
+    def test_excluir_planta_preserva_integridade_dos_relacionamentos(self):
+        cuidado = Cuidados.objects.create(
+            planta=self.planta,
+            data=date(2026, 8, 25),
+        )
+        cuidado.tipo.add(self.tipo)
+        fotografia = Fotografia.objects.create(
+            planta=self.planta,
+            imagem="plantas/fotografias/planta.jpg",
+            data_foto=date(2026, 8, 25),
+        )
+        usuario = User.objects.create_user(username="jardineiro")
+        pessoa = Pessoa.objects.create(
+            usuario=usuario,
+            nome="Jardineiro",
+            cpf="529.982.247-25",
+            email="jardineiro@example.com",
+        )
+        pessoa.plantas.add(self.planta)
+
+        self.planta.delete()
+
+        self.assertFalse(Cuidados.objects.filter(pk=cuidado.pk).exists())
+        self.assertFalse(Fotografia.objects.filter(pk=fotografia.pk).exists())
+        self.assertTrue(Categoria.objects.filter(pk=self.categoria.pk).exists())
+        self.assertTrue(TipoDeCuidado.objects.filter(pk=self.tipo.pk).exists())
+        self.assertTrue(Pessoa.objects.filter(pk=pessoa.pk).exists())
+        self.assertFalse(pessoa.plantas.exists())
+
 
 class PlantaViewTests(TestCase):
     def setUp(self):
         self.categoria = Categoria.objects.create(
             nome="Medicinal", descricao="Plantas para uso medicinal."
+        )
+        self.tipo = TipoDeCuidado.objects.create(
+            codigo="regar_pouco", nome="Regar pouco"
         )
 
     def test_paginas_de_listagem_respondem(self):
@@ -63,11 +100,15 @@ class PlantaViewTests(TestCase):
             with self.subTest(url=nome):
                 self.assertEqual(self.client.get(reverse(nome)).status_code, 200)
 
-    def test_formulario_de_cuidado_exibe_campo_booleano(self):
+    def test_formulario_de_cuidado_exibe_tipos_cadastrados(self):
         resposta = self.client.get(reverse("plantas:cuidado_criar"))
 
         self.assertEqual(resposta.status_code, 200)
-        self.assertContains(resposta, 'type="checkbox"', count=1)
+        self.assertContains(
+            resposta,
+            'type="checkbox"',
+            count=TipoDeCuidado.objects.count(),
+        )
 
     def test_cria_categoria(self):
         resposta = self.client.post(
@@ -103,17 +144,14 @@ class PlantaViewTests(TestCase):
             reverse("plantas:cuidado_criar"),
             {
                 "planta": planta.pk,
-                "tipo": "on",
+                "tipo": [self.tipo.pk],
                 "data": "2026-08-23",
                 "observacoes": "Rega realizada.",
             },
         )
         self.assertRedirects(resposta, reverse("plantas:cuidado_listar"))
-        self.assertTrue(
-            Cuidados.objects.filter(
-                planta=planta, tipo=True
-            ).exists()
-        )
+        cuidado = Cuidados.objects.get(planta=planta)
+        self.assertEqual(list(cuidado.tipo.all()), [self.tipo])
 
     def test_crud_completo_das_entidades(self):
         planta = Planta.objects.create(
@@ -124,9 +162,9 @@ class PlantaViewTests(TestCase):
         )
         cuidado = Cuidados.objects.create(
             planta=planta,
-            tipo=True,
             data=date(2026, 8, 23),
         )
+        cuidado.tipo.add(self.tipo)
         fotografia = Fotografia.objects.create(
             planta=planta,
             imagem="plantas/fotografias/manjericao.jpg",
