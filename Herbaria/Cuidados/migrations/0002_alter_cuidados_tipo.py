@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='cuidados',
+            model_name='cuidado',
             name='tipo',
             field=models.BooleanField(verbose_name='tipo'),
         ),

@@ -5,19 +5,18 @@ from .models import Pessoa
 
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "nome", "cpf", "email", "cidade")
+    list_display = ("username", "nome", "cpf", "email", "cidade")
     list_filter = ("sexo", "estado")
     search_fields = (
-        "usuario__username",
+        "username",
         "nome",
         "email",
         "cpf",
         "telefone",
     )
-    autocomplete_fields = ("usuario",)
     filter_horizontal = ("plantas",)
     fieldsets = (
-        ("Usuário", {"fields": ("usuario",)}),
+        ("Usuário", {"fields": ("username",)}),
         (
             "Dados pessoais",
             {
