@@ -1,30 +1,28 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from .models import Pessoa
 
 
 @admin.register(Pessoa)
-class PessoaAdmin(UserAdmin):
-    list_display = (
-        "username",
-        "nome",
+class PessoaAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "nome", "cpf", "email", "cidade")
+    list_filter = ("sexo", "estado")
+    search_fields = (
+        "usuario__username",
+        "usuario__first_name",
+        "usuario__last_name",
+        "usuario__email",
         "cpf",
-        "email",
-        "cidade",
-        "is_staff",
-        "is_active",
+        "telefone",
     )
-    list_filter = ("is_staff", "is_active", "sexo", "estado", "groups")
-    search_fields = ("username", "nome", "cpf", "email", "telefone")
-    filter_horizontal = ("groups", "user_permissions", "plantas")
-    ordering = ("nome", "username")
-    fieldsets = UserAdmin.fieldsets + (
+    autocomplete_fields = ("usuario",)
+    filter_horizontal = ("plantas",)
+    fieldsets = (
+        ("Usuário", {"fields": ("usuario",)}),
         (
             "Dados pessoais",
             {
                 "fields": (
-                    "nome",
                     "cpf",
                     "data_nascimento",
                     "sexo",
@@ -38,12 +36,11 @@ class PessoaAdmin(UserAdmin):
         ),
         ("Herbário", {"fields": ("plantas",)}),
     )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (
-            "Dados da pessoa",
-            {
-                "classes": ("wide",),
-                "fields": ("nome", "cpf", "email"),
-            },
-        ),
-    )
+
+    @admin.display(description="nome", ordering="usuario__first_name")
+    def nome(self, pessoa):
+        return pessoa.usuario.get_full_name()
+
+    @admin.display(description="e-mail", ordering="usuario__email")
+    def email(self, pessoa):
+        return pessoa.usuario.email
