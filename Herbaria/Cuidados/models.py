@@ -14,7 +14,7 @@ class TipoDeCuidado(models.Model):
         return self.nome
 
 
-class Cuidados(models.Model):
+class Cuidado(models.Model):
     planta = models.ForeignKey(
         "plantas.Planta",
         on_delete=models.CASCADE,
@@ -44,4 +44,4 @@ class Cuidados(models.Model):
     def get_tipos_display(self):
         return ", ".join(tipo.nome for tipo in self.tipo.all())
 
-    get_tipos_display.short_description = "cuidados"
+    get_tipos_display.short_description = "cuidado"

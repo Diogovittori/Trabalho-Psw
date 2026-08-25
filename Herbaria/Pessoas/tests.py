@@ -13,9 +13,9 @@ class PessoaModelTests(TestCase):
         usuario = User.objects.create_user(username=f"usuario-{cpf}")
         return Pessoa(
             usuario=usuario,
-            nome="Pessoa de teste",
-            cpf=cpf,
-            email="pessoa@example.com",
+            nome="Enzo",
+            cpf= "529.982.247-25",
+            email="Enzovittorio@gmail.com",
         )
 
     def test_aceita_cpf_matematicamente_valido(self):

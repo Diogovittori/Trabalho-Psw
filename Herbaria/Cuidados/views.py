@@ -2,12 +2,12 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from Plantas.forms import CuidadosForm
-from .models import Cuidados
+from .models import Cuidado
 
 
 def cuidado_listar(request):
-    cuidados = Cuidados.objects.select_related("planta")
-    return render(request, "Plantas/cuidado_listar.html", {"cuidados": cuidados})
+    cuidado = Cuidado.objects.select_related("planta")
+    return render(request, "Plantas/cuidado_listar.html", {"cuidado": cuidado})
 
 
 def cuidado_criar(request):
@@ -27,14 +27,14 @@ def cuidado_criar(request):
 
 
 def cuidado_detalhar(request, pk):
-    cuidado = get_object_or_404(Cuidados.objects.select_related("planta"), pk=pk)
+    cuidado = get_object_or_404(Cuidado.objects.select_related("planta"), pk=pk)
     return render(
         request, "Plantas/cuidado_detalhar.html", {"cuidado": cuidado}
     )
 
 
 def cuidado_editar(request, pk):
-    cuidado = get_object_or_404(Cuidados, pk=pk)
+    cuidado = get_object_or_404(Cuidado, pk=pk)
     if request.method == "POST":
         form = CuidadosForm(request.POST, instance=cuidado)
         if form.is_valid():
@@ -51,7 +51,7 @@ def cuidado_editar(request, pk):
 
 
 def cuidado_excluir(request, pk):
-    cuidado = get_object_or_404(Cuidados, pk=pk)
+    cuidado = get_object_or_404(Cuidado, pk=pk)
     if request.method == "POST":
         cuidado.delete()
         messages.success(request, "Cuidado excluído com sucesso.")

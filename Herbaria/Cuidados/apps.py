@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class CuidadosConfig(AppConfig):
+class CuidadoConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "Cuidados"
-    label = "cuidados"
+    name = "Cuidado"
+    label = "cuidado"
