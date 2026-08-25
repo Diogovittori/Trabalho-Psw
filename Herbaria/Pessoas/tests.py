@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 
-from Plantas.models import Categoria, Planta
+from Categoria.models import Categoria
+from Plantas.models import Planta
 
 from .models import Pessoa
 
@@ -14,11 +16,14 @@ class PessoaModelTests(TestCase):
             descricao="Planta aromática.",
             categoria=categoria,
         )
-        pessoa = Pessoa.objects.create_user(
+        usuario = User.objects.create_user(
             username="ana",
             password="senha-segura",
+        )
+        pessoa = Pessoa.objects.create(
+            usuario=usuario,
             nome="Ana",
-            cpf="123.456.789-00",
+            cpf=12345678900,
             email="ana@example.com",
         )
 

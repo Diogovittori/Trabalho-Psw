@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from .models import Categoria, Cuidados, Fotografia, Planta
+from Cuidados.models import Cuidados
+from Fotografia.models import Fotografia
+
+from .models import Planta
 
 
 class CuidadosInline(admin.TabularInline):
@@ -16,38 +19,11 @@ class FotografiaInline(admin.TabularInline):
 @admin.register(Planta)
 class PlantaAdmin(admin.ModelAdmin):
     list_display = (
-        "nome_popular",
-        "nome_cientifico",
-        "categoria",
-        "data_plantio",
-        "data_cadastro",
+        "nome_popular", "nome_cientifico", "categoria",
+        "status", "data_plantio", "data_cadastro",
     )
-    list_filter = ("categoria", "data_cadastro", "data_plantio")
+    list_filter = ("categoria", "status", "data_cadastro", "data_plantio")
     search_fields = ("nome_popular", "nome_cientifico", "descricao")
     autocomplete_fields = ("categoria",)
     date_hierarchy = "data_cadastro"
     inlines = (CuidadosInline, FotografiaInline)
-
-
-@admin.register(Categoria)
-class CategoriaAdmin(admin.ModelAdmin):
-    list_display = ("nome", "descricao")
-    search_fields = ("nome", "descricao")
-
-
-@admin.register(Cuidados)
-class CuidadosAdmin(admin.ModelAdmin):
-    list_display = ("planta", "get_tipos_display", "data")
-    list_filter = ("data",)
-    search_fields = ("planta__nome_popular", "observacoes")
-    autocomplete_fields = ("planta",)
-    date_hierarchy = "data"
-
-
-@admin.register(Fotografia)
-class FotografiaAdmin(admin.ModelAdmin):
-    list_display = ("planta", "data_foto", "imagem")
-    list_filter = ("data_foto",)
-    search_fields = ("planta__nome_popular", "planta__nome_cientifico")
-    autocomplete_fields = ("planta",)
-    date_hierarchy = "data_foto"

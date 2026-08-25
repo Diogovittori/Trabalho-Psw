@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
                 ('descricao', models.TextField(verbose_name='descrição')),
                 ('data_cadastro', models.DateField(auto_now_add=True, verbose_name='data de cadastro')),
                 ('data_plantio', models.DateField(blank=True, null=True, verbose_name='data de plantio')),
+                ('status', models.CharField(default='ativa', max_length=20, verbose_name='status')),
                 ('categoria', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='plantas', to='plantas.categoria', verbose_name='categoria')),
             ],
             options={

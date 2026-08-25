@@ -1,6 +1,9 @@
 from django import forms
 
-from .models import Categoria, Cuidados, Fotografia, Planta
+from Categoria.models import Categoria
+from Cuidados.models import Cuidados
+from Fotografia.models import Fotografia
+from .models import Planta
 
 
 class DateInput(forms.DateInput):
@@ -20,6 +23,7 @@ class PlantaForm(forms.ModelForm):
             "nome_cientifico",
             "nome_popular",
             "descricao",
+            "status",
             "data_plantio",
             "categoria",
         )
@@ -31,13 +35,6 @@ class PlantaForm(forms.ModelForm):
 
 
 class CuidadosForm(forms.ModelForm):
-    tipo = forms.MultipleChoiceField(
-        label="Tipos de cuidado",
-        choices=Cuidados.TIPOS,
-        widget=forms.CheckboxSelectMultiple,
-        help_text="Marque um ou mais cuidados.",
-    )
-
     class Meta:
         model = Cuidados
         fields = ("planta", "tipo", "data", "observacoes")

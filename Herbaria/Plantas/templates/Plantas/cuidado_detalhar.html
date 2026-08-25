@@ -2,6 +2,6 @@
 {% block title %}Cuidado de {{ cuidado.planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
 <h2>Cuidado de {{ cuidado.planta.nome_popular }}</h2>
-<dl class="detalhes"><dt>Planta</dt><dd>{{ cuidado.planta }}</dd><dt>Data</dt><dd>{{ cuidado.data|date:"d/m/Y" }}</dd><dt>Cuidados</dt><dd>{{ cuidado.get_tipos_display }}</dd><dt>Observações</dt><dd>{{ cuidado.observacoes|default:"—" }}</dd></dl>
+<dl class="detalhes"><dt>Planta</dt><dd>{{ cuidado.planta }}</dd><dt>Data</dt><dd>{{ cuidado.data|date:"d/m/Y" }}</dd><dt>Tipo</dt><dd>{{ cuidado.tipo|yesno:"Sim,Não" }}</dd><dt>Observações</dt><dd>{{ cuidado.observacoes|default:"—" }}</dd></dl>
 <p><a class="botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a> <a class="botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a></p>
 {% endblock %}

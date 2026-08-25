@@ -3,7 +3,10 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Categoria, Cuidados, Fotografia, Planta
+from Categoria.models import Categoria
+from Cuidados.models import Cuidados
+from Fotografia.models import Fotografia
+from .models import Planta
 
 
 class PlantaModelTests(TestCase):
@@ -22,7 +25,7 @@ class PlantaModelTests(TestCase):
     def test_relacionamentos_da_planta(self):
         cuidado = Cuidados.objects.create(
             planta=self.planta,
-            tipo=["regar_moderadamente", "luz_indireta"],
+            tipo=True,
             data=date(2026, 8, 18),
             observacoes="Rega concluída.",
         )
@@ -60,12 +63,11 @@ class PlantaViewTests(TestCase):
             with self.subTest(url=nome):
                 self.assertEqual(self.client.get(reverse(nome)).status_code, 200)
 
-    def test_formulario_de_cuidado_exibe_checkboxes_e_texto_em_portugues(self):
+    def test_formulario_de_cuidado_exibe_campo_booleano(self):
         resposta = self.client.get(reverse("plantas:cuidado_criar"))
 
         self.assertEqual(resposta.status_code, 200)
-        self.assertContains(resposta, 'type="checkbox"', count=len(Cuidados.TIPOS))
-        self.assertContains(resposta, "Selecione uma opção")
+        self.assertContains(resposta, 'type="checkbox"', count=1)
 
     def test_cria_categoria(self):
         resposta = self.client.post(
@@ -82,6 +84,7 @@ class PlantaViewTests(TestCase):
                 "nome_cientifico": "Mentha spicata",
                 "nome_popular": "Hortelã",
                 "descricao": "Planta aromática.",
+                "status": "ativa",
                 "data_plantio": "2026-08-20",
                 "categoria": self.categoria.pk,
             },
@@ -100,7 +103,7 @@ class PlantaViewTests(TestCase):
             reverse("plantas:cuidado_criar"),
             {
                 "planta": planta.pk,
-                "tipo": ["regar_pouco", "luz_indireta"],
+                "tipo": "on",
                 "data": "2026-08-23",
                 "observacoes": "Rega realizada.",
             },
@@ -108,7 +111,7 @@ class PlantaViewTests(TestCase):
         self.assertRedirects(resposta, reverse("plantas:cuidado_listar"))
         self.assertTrue(
             Cuidados.objects.filter(
-                planta=planta, tipo=["regar_pouco", "luz_indireta"]
+                planta=planta, tipo=True
             ).exists()
         )
 
@@ -121,7 +124,7 @@ class PlantaViewTests(TestCase):
         )
         cuidado = Cuidados.objects.create(
             planta=planta,
-            tipo=["regar_moderadamente"],
+            tipo=True,
             data=date(2026, 8, 23),
         )
         fotografia = Fotografia.objects.create(
@@ -163,6 +166,7 @@ class PlantaViewTests(TestCase):
                 "nome_cientifico": planta.nome_cientifico,
                 "nome_popular": "Manjericão-roxo",
                 "descricao": planta.descricao,
+                "status": planta.status,
                 "data_plantio": "",
                 "categoria": self.categoria.pk,
             },

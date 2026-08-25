@@ -2,7 +2,10 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CategoriaForm, CuidadosForm, FotografiaForm, PlantaForm
-from .models import Categoria, Cuidados, Fotografia, Planta
+from Categoria.models import Categoria
+from Cuidados.models import Cuidados
+from Fotografia.models import Fotografia
+from .models import Planta
 
 
 def inicio(request):

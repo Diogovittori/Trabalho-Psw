@@ -9,9 +9,8 @@ class PessoaAdmin(admin.ModelAdmin):
     list_filter = ("sexo", "estado")
     search_fields = (
         "usuario__username",
-        "usuario__first_name",
-        "usuario__last_name",
-        "usuario__email",
+        "nome",
+        "email",
         "cpf",
         "telefone",
     )
@@ -24,8 +23,10 @@ class PessoaAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "cpf",
+                    "nome",
                     "data_nascimento",
                     "sexo",
+                    "email",
                     "telefone",
                 )
             },
@@ -36,11 +37,3 @@ class PessoaAdmin(admin.ModelAdmin):
         ),
         ("Herbário", {"fields": ("plantas",)}),
     )
-
-    @admin.display(description="nome", ordering="usuario__first_name")
-    def nome(self, pessoa):
-        return pessoa.usuario.get_full_name()
-
-    @admin.display(description="e-mail", ordering="usuario__email")
-    def email(self, pessoa):
-        return pessoa.usuario.email
