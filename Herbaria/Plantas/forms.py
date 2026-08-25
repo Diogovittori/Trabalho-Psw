@@ -23,7 +23,6 @@ class PlantaForm(forms.ModelForm):
             "nome_cientifico",
             "nome_popular",
             "descricao",
-            "status",
             "data_plantio",
             "categoria",
         )

@@ -6,7 +6,6 @@ class Planta(models.Model):
     nome_popular = models.CharField("nome popular", max_length=150)
     descricao = models.TextField("descrição")
     data_cadastro = models.DateField("data de cadastro", auto_now_add=True)
-    status = models.CharField("status", max_length=20, default="ativa")
     data_plantio = models.DateField("data de plantio", null=True, blank=True)
     categoria = models.ForeignKey(
         "categoria.Categoria",

@@ -20,9 +20,9 @@ class FotografiaInline(admin.TabularInline):
 class PlantaAdmin(admin.ModelAdmin):
     list_display = (
         "nome_popular", "nome_cientifico", "categoria",
-        "status", "data_plantio", "data_cadastro",
+        "data_plantio", "data_cadastro",
     )
-    list_filter = ("categoria", "status", "data_cadastro", "data_plantio")
+    list_filter = ("categoria", "data_cadastro", "data_plantio")
     search_fields = ("nome_popular", "nome_cientifico", "descricao")
     autocomplete_fields = ("categoria",)
     date_hierarchy = "data_cadastro"

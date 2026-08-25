@@ -23,7 +23,7 @@ class PlantaModelTests(TestCase):
             data_plantio=date(2026, 1, 10),
             categoria=self.categoria,
         )
-        self.tipo = TipoDeCuidado.objects.create(
+        self.tipo, _ = TipoDeCuidado.objects.get_or_create(
             codigo="regar_moderadamente", nome="Regar moderadamente"
         )
 
@@ -85,7 +85,7 @@ class PlantaViewTests(TestCase):
         self.categoria = Categoria.objects.create(
             nome="Medicinal", descricao="Plantas para uso medicinal."
         )
-        self.tipo = TipoDeCuidado.objects.create(
+        self.tipo, _ = TipoDeCuidado.objects.get_or_create(
             codigo="regar_pouco", nome="Regar pouco"
         )
 
@@ -109,6 +109,9 @@ class PlantaViewTests(TestCase):
             'type="checkbox"',
             count=TipoDeCuidado.objects.count(),
         )
+        self.assertContains(resposta, "Regar muito")
+        self.assertContains(resposta, "Adubar")
+        self.assertContains(resposta, "Colocar em local iluminado")
 
     def test_cria_categoria(self):
         resposta = self.client.post(
@@ -125,7 +128,6 @@ class PlantaViewTests(TestCase):
                 "nome_cientifico": "Mentha spicata",
                 "nome_popular": "Hortelã",
                 "descricao": "Planta aromática.",
-                "status": "ativa",
                 "data_plantio": "2026-08-20",
                 "categoria": self.categoria.pk,
             },
@@ -204,7 +206,6 @@ class PlantaViewTests(TestCase):
                 "nome_cientifico": planta.nome_cientifico,
                 "nome_popular": "Manjericão-roxo",
                 "descricao": planta.descricao,
-                "status": planta.status,
                 "data_plantio": "",
                 "categoria": self.categoria.pk,
             },
