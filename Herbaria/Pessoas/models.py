@@ -23,19 +23,13 @@ def validar_cpf(valor):
             )
 
 
-class Pessoa(models.Model):
+class Pessoa(User):
     class Sexo(models.TextChoices):
         FEMININO = "F", "Feminino"
         MASCULINO = "M", "Masculino"
         OUTRO = "O", "Outro"
         NAO_INFORMADO = "N", "Prefiro não informar"
 
-    usuario = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name="pessoa",
-        verbose_name="usuário",
-    )
     nome = models.CharField("nome", max_length=150, default="")
     cpf = models.CharField(
         "CPF", max_length=14, unique=True, validators=[validar_cpf]
@@ -46,7 +40,6 @@ class Pessoa(models.Model):
     sexo = models.CharField(
         "sexo", max_length=1, choices=Sexo.choices, blank=True
     )
-    email = models.EmailField("e-mail", default="")
     telefone = models.CharField("telefone", max_length=20, blank=True)
     numero = models.PositiveIntegerField("número", null=True, blank=True)
     bairro = models.CharField("bairro", max_length=100, blank=True)

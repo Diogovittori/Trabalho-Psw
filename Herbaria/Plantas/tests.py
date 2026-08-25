@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from Categoria.models import Categoria
-from Cuidados.models import Cuidados, TipoDeCuidado
+from Cuidados.models import Cuidado as Cuidados, TipoDeCuidado
 from Fotografia.models import Fotografia
 from Pessoas.models import Pessoa
 from Plantas.models import Planta

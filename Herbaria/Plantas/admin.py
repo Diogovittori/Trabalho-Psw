@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from Cuidados.models import Cuidados
+from Cuidados.models import Cuidado as Cuidados
 from Fotografia.models import Fotografia
 
 from .models import Planta
