@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.SeparateDatabaseAndState(state_operations=[migrations.CreateModel(
-            name='Cuidados',
+            name='Cuidado',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('tipo', models.JSONField(default=list, verbose_name='tipos de cuidado')),

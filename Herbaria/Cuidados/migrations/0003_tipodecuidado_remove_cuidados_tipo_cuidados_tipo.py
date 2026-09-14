@@ -4,7 +4,7 @@ from django.db import migrations, models
 
 
 def migrar_tipos_existentes(apps, schema_editor):
-    Cuidados = apps.get_model("cuidados", "Cuidados")
+    Cuidados = apps.get_model("cuidados", "Cuidado")
     TipoDeCuidado = apps.get_model("cuidados", "TipoDeCuidado")
     tipo_ativo = TipoDeCuidado.objects.create(
         codigo="cuidado_ativo",
@@ -15,7 +15,7 @@ def migrar_tipos_existentes(apps, schema_editor):
 
 
 def reverter_tipos_existentes(apps, schema_editor):
-    Cuidados = apps.get_model("cuidados", "Cuidados")
+    Cuidados = apps.get_model("cuidados", "Cuidado")
     for cuidado in Cuidados.objects.all():
         cuidado.tipo = cuidado.tipos_novos.exists()
         cuidado.save(update_fields=["tipo"])
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='cuidados',
+            model_name='cuidado',
             name='tipos_novos',
             field=models.ManyToManyField(related_name='cuidados', to='cuidados.tipodecuidado', verbose_name='tipos de cuidado'),
         ),
@@ -51,11 +51,11 @@ class Migration(migrations.Migration):
             reverter_tipos_existentes,
         ),
         migrations.RemoveField(
-            model_name='cuidados',
+            model_name='cuidado',
             name='tipo',
         ),
         migrations.RenameField(
-            model_name='cuidados',
+            model_name='cuidado',
             old_name='tipos_novos',
             new_name='tipo',
         ),
