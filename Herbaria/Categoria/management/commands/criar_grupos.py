@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -18,22 +19,17 @@ class Command(BaseCommand):
         permissoes_editores = []
 
         for modelo in modelos:
-            app_label = modelo._meta.app_label
-            model_name = modelo._meta.model_name
-
-            permissao_view = Permission.objects.get(
-                content_type__app_label=app_label,
-                content_type__model=model_name,
-                codename=f"view_{model_name}",
-            )
-            permissoes_leitores.append(permissao_view)
+            content_type = ContentType.objects.get_for_model(modelo)
+            modelo_nome = content_type.model
 
             for acao in ("view", "add", "change", "delete"):
-                permissao = Permission.objects.get(
-                    content_type__app_label=app_label,
-                    content_type__model=model_name,
-                    codename=f"{acao}_{model_name}",
+                permissao, _ = Permission.objects.get_or_create(
+                    content_type=content_type,
+                    codename=f"{acao}_{modelo_nome}",
+                    defaults={"name": f"Can {acao} {modelo_nome}"},
                 )
+                if acao == "view":
+                    permissoes_leitores.append(permissao)
                 permissoes_editores.append(permissao)
 
         grupo_leitores, _ = Group.objects.get_or_create(

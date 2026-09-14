@@ -14,24 +14,46 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import redirect, render
 from django.urls import include, path
+
+
+def login_view(request):
+    next_url = request.GET.get("next") or ""
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = authenticate(
+                request,
+                username=form.cleaned_data.get("username"),
+                password=form.cleaned_data.get("password"),
+            )
+            if user is not None:
+                login(request, user)
+                return redirect(request.POST.get("next") or "plantas:planta_listar")
+    else:
+        form = AuthenticationForm(request)
+
+    return render(
+        request,
+        "registration/login.html",
+        {"form": form, "next": next_url},
+    )
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
 
 urlpatterns = [
     path('', include('Plantas.urls')),
     path('admin/', admin.site.urls),
-    path(
-        "contas/login/",
-        auth_views.LoginView.as_view(
-            template_name="registration/login.html"
-        ),
-        name="login",
-    ),
-    path(
-        "contas/logout/",
-        auth_views.LogoutView.as_view(),
-        name="logout",
-    ),
+    path("contas/login/", login_view, name="login"),
+    path("contas/logout/", logout_view, name="logout"),
 ]
 
 if settings.DEBUG:
