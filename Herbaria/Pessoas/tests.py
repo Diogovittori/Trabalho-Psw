@@ -14,7 +14,7 @@ class PessoaModelTests(TestCase):
         return Pessoa(
             usuario=usuario,
             nome="Enzo",
-            cpf= "529.982.247-25",
+            cpf=cpf,
             email="Enzovittorio@gmail.com",
         )
 

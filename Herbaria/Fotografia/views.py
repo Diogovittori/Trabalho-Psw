@@ -1,10 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import FotografiaForm
 from .models import Fotografia
 
 
+@login_required
 def fotografia_listar(request):
     fotografias = Fotografia.objects.select_related("planta")
     return render(
@@ -12,6 +14,7 @@ def fotografia_listar(request):
     )
 
 
+@permission_required("fotografia.add_fotografia", raise_exception=True)
 def fotografia_criar(request):
     if request.method == "POST":
         form = FotografiaForm(request.POST, request.FILES)
@@ -28,6 +31,7 @@ def fotografia_criar(request):
     )
 
 
+@login_required
 def fotografia_detalhar(request, pk):
     fotografia = get_object_or_404(
         Fotografia.objects.select_related("planta"), pk=pk
@@ -37,6 +41,7 @@ def fotografia_detalhar(request, pk):
     )
 
 
+@permission_required("fotografia.change_fotografia", raise_exception=True)
 def fotografia_editar(request, pk):
     fotografia = get_object_or_404(Fotografia, pk=pk)
     if request.method == "POST":
@@ -56,6 +61,7 @@ def fotografia_editar(request, pk):
     )
 
 
+@permission_required("fotografia.delete_fotografia", raise_exception=True)
 def fotografia_excluir(request, pk):
     fotografia = get_object_or_404(Fotografia, pk=pk)
     if request.method == "POST":

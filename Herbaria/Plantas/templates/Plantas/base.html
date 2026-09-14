@@ -15,6 +15,15 @@
         <a href="{% url 'plantas:categoria_listar' %}">Categorias</a>
         <a href="{% url 'plantas:cuidado_listar' %}">Cuidados</a>
         <a href="{% url 'plantas:fotografia_listar' %}">Fotografias</a>
+        {% if user.is_authenticated %}
+            <span>{{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+        {% endif %}
     </nav>
 </header>
 <main>

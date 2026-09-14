@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Cuidado, TipoDeCuidado
+from .models import Cuidados, TipoDeCuidado
 
 
 class DateInput(forms.DateInput):
@@ -16,7 +16,7 @@ class CuidadosForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Cuidado
+        model = Cuidados
         fields = ("planta", "tipo", "data", "observacoes")
         widgets = {"data": DateInput()}
 

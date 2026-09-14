@@ -1,0 +1,14 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Entrar | Herbaria{% endblock %}
+{% block content %}
+<h2>Entrar no Herbaria</h2>
+<p>Use seu nome de usuário e sua senha.</p>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
+    <button type="submit">Entrar</button>
+</form>
+{% endblock %}

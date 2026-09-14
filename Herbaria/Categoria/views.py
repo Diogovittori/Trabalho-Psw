@@ -1,10 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CategoriaForm
 from .models import Categoria
 
 
+@login_required
 def categoria_listar(request):
     categorias = Categoria.objects.prefetch_related("plantas")
     return render(
@@ -12,6 +14,7 @@ def categoria_listar(request):
     )
 
 
+@permission_required("categoria.add_categoria", raise_exception=True)
 def categoria_criar(request):
     if request.method == "POST":
         form = CategoriaForm(request.POST)
@@ -28,6 +31,7 @@ def categoria_criar(request):
     )
 
 
+@login_required
 def categoria_detalhar(request, pk):
     categoria = get_object_or_404(
         Categoria.objects.prefetch_related("plantas"), pk=pk
@@ -37,6 +41,7 @@ def categoria_detalhar(request, pk):
     )
 
 
+@permission_required("categoria.change_categoria", raise_exception=True)
 def categoria_editar(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == "POST":
@@ -54,6 +59,7 @@ def categoria_editar(request, pk):
     )
 
 
+@permission_required("categoria.delete_categoria", raise_exception=True)
 def categoria_excluir(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == "POST":

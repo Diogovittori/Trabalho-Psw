@@ -3,5 +3,5 @@
 {% block content %}
 <h2>{{ categoria.nome }}</h2>
 <dl class="detalhes"><dt>Descrição</dt><dd>{{ categoria.descricao|default:"—" }}</dd><dt>Plantas cadastradas</dt><dd>{{ categoria.plantas.count }}</dd></dl>
-<p><a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a> <a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a></p>
+<p>{% if perms.categoria.change_categoria %}<a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a>{% endif %} {% if perms.categoria.delete_categoria %}<a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a>{% endif %}</p>
 {% endblock %}

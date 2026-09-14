@@ -14,7 +14,7 @@ class TipoDeCuidado(models.Model):
         return self.nome
 
 
-class Cuidado(models.Model):
+class Cuidados(models.Model):
     planta = models.ForeignKey(
         "plantas.Planta",
         on_delete=models.CASCADE,

@@ -2,10 +2,10 @@
 {% block title %}Plantas | Herbaria{% endblock %}
 {% block content %}
 <h2>Plantas</h2>
-<a class="acoes" href="{% url 'plantas:planta_criar' %}">Nova planta</a>
+{% if perms.plantas.add_planta %}<a class="acoes" href="{% url 'plantas:planta_criar' %}">Nova planta</a>{% endif %}
 <table><thead><tr><th>Nome popular</th><th>Nome científico</th><th>Categoria</th><th>Plantio</th><th></th></tr></thead><tbody>
 {% for planta in plantas %}
-<tr><td>{{ planta.nome_popular }}</td><td><em>{{ planta.nome_cientifico }}</em></td><td>{{ planta.categoria|default:"Sem categoria" }}</td><td>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:planta_detalhar' planta.pk %}">Visualizar</a><a class="botao editar" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a><a class="botao excluir" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a></td></tr>
+<tr><td>{{ planta.nome_popular }}</td><td><em>{{ planta.nome_cientifico }}</em></td><td>{{ planta.categoria|default:"Sem categoria" }}</td><td>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:planta_detalhar' planta.pk %}">Visualizar</a>{% if perms.plantas.change_planta %}<a class="botao editar" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a>{% endif %}{% if perms.plantas.delete_planta %}<a class="botao excluir" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a>{% endif %}</td></tr>
 {% empty %}<tr><td colspan="5">Nenhuma planta cadastrada.</td></tr>{% endfor %}
 </tbody></table>
 {% endblock %}

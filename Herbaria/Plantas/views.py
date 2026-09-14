@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import PlantaForm
@@ -9,11 +10,13 @@ def inicio(request):
     return redirect("plantas:planta_listar")
 
 
+@login_required
 def planta_listar(request):
     plantas = Planta.objects.select_related("categoria")
     return render(request, "Plantas/planta_listar.html", {"plantas": plantas})
 
 
+@permission_required("plantas.add_planta", raise_exception=True)
 def planta_criar(request):
     if request.method == "POST":
         form = PlantaForm(request.POST)
@@ -30,6 +33,7 @@ def planta_criar(request):
     )
 
 
+@login_required
 def planta_detalhar(request, pk):
     planta = get_object_or_404(
         Planta.objects.select_related("categoria").prefetch_related(
@@ -40,6 +44,7 @@ def planta_detalhar(request, pk):
     return render(request, "Plantas/planta_detalhar.html", {"planta": planta})
 
 
+@permission_required("plantas.change_planta", raise_exception=True)
 def planta_editar(request, pk):
     planta = get_object_or_404(Planta, pk=pk)
     if request.method == "POST":
@@ -57,6 +62,7 @@ def planta_editar(request, pk):
     )
 
 
+@permission_required("plantas.delete_planta", raise_exception=True)
 def planta_excluir(request, pk):
     planta = get_object_or_404(Planta, pk=pk)
     if request.method == "POST":

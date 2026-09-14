@@ -1,15 +1,18 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CuidadosForm
-from .models import Cuidado
+from .models import Cuidados
 
 
+@login_required
 def cuidado_listar(request):
-    cuidado = Cuidado.objects.select_related("planta")
+    cuidado = Cuidados.objects.select_related("planta")
     return render(request, "Plantas/cuidado_listar.html", {"cuidado": cuidado})
 
 
+@permission_required("cuidados.add_cuidados", raise_exception=True)
 def cuidado_criar(request):
     if request.method == "POST":
         form = CuidadosForm(request.POST)
@@ -26,15 +29,17 @@ def cuidado_criar(request):
     )
 
 
+@login_required
 def cuidado_detalhar(request, pk):
-    cuidado = get_object_or_404(Cuidado.objects.select_related("planta"), pk=pk)
+    cuidado = get_object_or_404(Cuidados.objects.select_related("planta"), pk=pk)
     return render(
         request, "Plantas/cuidado_detalhar.html", {"cuidado": cuidado}
     )
 
 
+@permission_required("cuidados.change_cuidados", raise_exception=True)
 def cuidado_editar(request, pk):
-    cuidado = get_object_or_404(Cuidado, pk=pk)
+    cuidado = get_object_or_404(Cuidados, pk=pk)
     if request.method == "POST":
         form = CuidadosForm(request.POST, instance=cuidado)
         if form.is_valid():
@@ -50,8 +55,9 @@ def cuidado_editar(request, pk):
     )
 
 
+@permission_required("cuidados.delete_cuidados", raise_exception=True)
 def cuidado_excluir(request, pk):
-    cuidado = get_object_or_404(Cuidado, pk=pk)
+    cuidado = get_object_or_404(Cuidados, pk=pk)
     if request.method == "POST":
         cuidado.delete()
         messages.success(request, "Cuidado excluído com sucesso.")
