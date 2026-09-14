@@ -5,10 +5,10 @@ from .models import Pessoa
 
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
-    list_display = ("username", "nome", "cpf", "email", "cidade")
+    list_display = ("usuario", "nome", "cpf", "email", "cidade")
     list_filter = ("sexo", "estado")
     search_fields = (
-        "username",
+        "usuario__username",
         "nome",
         "email",
         "cpf",
@@ -16,7 +16,7 @@ class PessoaAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ("plantas",)
     fieldsets = (
-        ("Usuário", {"fields": ("username",)}),
+        ("Usuário", {"fields": ("usuario",)}),
         (
             "Dados pessoais",
             {
