@@ -1,22 +1,22 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import Pessoa
 
 
 @admin.register(Pessoa)
-class PessoaAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "nome", "cpf", "email", "cidade")
+class PessoaAdmin(UserAdmin):
+    list_display = ("username", "nome", "cpf", "email", "cidade")
     list_filter = ("sexo", "estado")
     search_fields = (
-        "usuario__username",
+        "username",
         "nome",
         "email",
         "cpf",
         "telefone",
     )
-    filter_horizontal = ("plantas",)
-    fieldsets = (
-        ("Usuário", {"fields": ("usuario",)}),
+    filter_horizontal = ("groups", "user_permissions", "plantas")
+    fieldsets = UserAdmin.fieldsets + (
         (
             "Dados pessoais",
             {
@@ -25,7 +25,6 @@ class PessoaAdmin(admin.ModelAdmin):
                     "nome",
                     "data_nascimento",
                     "sexo",
-                    "email",
                     "telefone",
                 )
             },

@@ -19,6 +19,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.urls import include, path
 
+from Pessoas import views as pessoas_views
+
 
 def login_view(request):
     next_url = request.GET.get("next") or ""
@@ -54,6 +56,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("contas/login/", login_view, name="login"),
     path("contas/logout/", logout_view, name="logout"),
+    path(
+        "contas/cadastro/",
+        pessoas_views.usuario_cadastrar,
+        name="usuario_cadastrar",
+    ),
 ]
 
 if settings.DEBUG:

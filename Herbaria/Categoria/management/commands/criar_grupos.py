@@ -35,11 +35,15 @@ class Command(BaseCommand):
         grupo_leitores, _ = Group.objects.get_or_create(
             name="Herbaria - Leitores"
         )
+        grupo_observadores, _ = Group.objects.get_or_create(
+            name="Observadores"
+        )
         grupo_editores, _ = Group.objects.get_or_create(
             name="Herbaria - Editores"
         )
 
         grupo_leitores.permissions.set(permissoes_leitores)
+        grupo_observadores.permissions.set(permissoes_leitores)
         grupo_editores.permissions.set(permissoes_editores)
 
         self.stdout.write(

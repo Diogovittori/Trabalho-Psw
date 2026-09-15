@@ -93,9 +93,8 @@ class PlantaModelTests(TestCase):
             imagem="plantas/fotografias/planta.jpg",
             data_foto=date(2026, 8, 25),
         )
-        usuario = User.objects.create_user(username="jardineiro")
-        pessoa = Pessoa.objects.create(
-            usuario=usuario,
+        pessoa = Pessoa.objects.create_user(
+            username="jardineiro",
             nome="Jardineiro",
             cpf="529.982.247-25",
             email="jardineiro@example.com",

@@ -15,6 +15,7 @@ form { max-width: 620px; padding: 1.5rem; background: white; border-radius: 6px;
 form p { display: grid; gap: .3rem; }
 input, select, textarea { padding: .55rem; border: 1px solid #aaa; border-radius: 4px; }
 .helptext { display: block; margin-top: .75rem; color: #526354; font-size: .9rem; font-weight: bold; }
+.erro, .erros { color: #a83232; font-weight: bold; }
 button { padding: .7rem 1rem; border: 0; border-radius: 4px; background: #315c3b; color: white; cursor: pointer; }
 .mensagem { padding: .75rem; background: #dff0df; border-radius: 4px; }
 .detalhes { background: white; padding: 1.5rem; border-radius: 6px; }

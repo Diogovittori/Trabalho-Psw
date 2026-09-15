@@ -16,6 +16,9 @@
         <a href="{% url 'plantas:cuidado_listar' %}">Cuidados</a>
         <a href="{% url 'plantas:fotografia_listar' %}">Fotografias</a>
         {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a href="{% url 'usuario_cadastrar' %}">Cadastrar usuário</a>
+            {% endif %}
             <span>{{ user.username }}</span>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
@@ -23,6 +26,7 @@
             </form>
         {% else %}
             <a href="{% url 'login' %}">Entrar</a>
+            <a href="{% url 'usuario_cadastrar' %}">Cadastrar-se</a>
         {% endif %}
     </nav>
 </header>

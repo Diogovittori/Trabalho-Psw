@@ -1,4 +1,4 @@
-from django.conf import settings
+from django.contrib.auth.models import User, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -23,21 +23,17 @@ def validar_cpf(valor):
             )
 
 
-class Pessoa(models.Model):
-    class Sexo(models.TextChoices):
-        FEMININO = "F", "Feminino"
-        MASCULINO = "M", "Masculino"
-        OUTRO = "O", "Outro"
-        NAO_INFORMADO = "N", "Prefiro não informar"
+class Sexo(models.TextChoices):
+    FEMININO = "F", "Feminino"
+    MASCULINO = "M", "Masculino"
+    OUTRO = "O", "Outro"
+    NAO_INFORMADO = "N", "Prefiro não informar"
 
-    usuario = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="pessoa",
-        verbose_name="usuário",
-    )
+
+class Pessoa(User):
+    objects = UserManager()
+
     nome = models.CharField("nome", max_length=150, default="")
-    email = models.EmailField("e-mail", default="")
     cpf = models.CharField(
         "CPF", max_length=14, unique=True, validators=[validar_cpf]
     )
@@ -64,3 +60,4 @@ class Pessoa(models.Model):
 
     def __str__(self):
         return self.nome
+    

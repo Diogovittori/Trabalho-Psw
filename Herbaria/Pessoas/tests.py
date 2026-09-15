@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -10,9 +9,9 @@ from .models import Pessoa
 
 class PessoaModelTests(TestCase):
     def criar_pessoa(self, cpf):
-        usuario = User.objects.create_user(username=f"usuario-{cpf}")
         return Pessoa(
-            usuario=usuario,
+            username=f"usuario-{cpf}",
+            password="senha-segura",
             nome="Enzo",
             cpf=cpf,
             email="Enzovittorio@gmail.com",
@@ -38,12 +37,9 @@ class PessoaModelTests(TestCase):
             descricao="Planta aromática.",
             categoria=categoria,
         )
-        usuario = User.objects.create_user(
+        pessoa = Pessoa.objects.create_user(
             username="ana",
             password="senha-segura",
-        )
-        pessoa = Pessoa.objects.create(
-            usuario=usuario,
             nome="Ana",
             cpf=12345678900,
             email="ana@example.com",
