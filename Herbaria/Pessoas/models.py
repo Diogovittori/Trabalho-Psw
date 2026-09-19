@@ -23,12 +23,6 @@ def validar_cpf(valor):
             )
 
 
-class Sexo(models.TextChoices):
-    FEMININO = "F", "Feminino"
-    MASCULINO = "M", "Masculino"
-    OUTRO = "O", "Outro"
-    NAO_INFORMADO = "N", "Prefiro não informar"
-
 
 class Pessoa(User):
     objects = UserManager()
