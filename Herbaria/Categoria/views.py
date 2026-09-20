@@ -14,6 +14,7 @@ def categoria_listar(request):
     )
 
 
+@login_required
 @permission_required("categoria.add_categoria", raise_exception=True)
 def categoria_criar(request):
     if request.method == "POST":
@@ -41,6 +42,7 @@ def categoria_detalhar(request, pk):
     )
 
 
+@login_required
 @permission_required("categoria.change_categoria", raise_exception=True)
 def categoria_editar(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
@@ -59,6 +61,7 @@ def categoria_editar(request, pk):
     )
 
 
+@login_required
 @permission_required("categoria.delete_categoria", raise_exception=True)
 def categoria_excluir(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)

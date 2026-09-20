@@ -14,6 +14,7 @@ def fotografia_listar(request):
     )
 
 
+@login_required
 @permission_required("fotografia.add_fotografia", raise_exception=True)
 def fotografia_criar(request):
     if request.method == "POST":
@@ -41,6 +42,7 @@ def fotografia_detalhar(request, pk):
     )
 
 
+@login_required
 @permission_required("fotografia.change_fotografia", raise_exception=True)
 def fotografia_editar(request, pk):
     fotografia = get_object_or_404(Fotografia, pk=pk)
@@ -61,6 +63,7 @@ def fotografia_editar(request, pk):
     )
 
 
+@login_required
 @permission_required("fotografia.delete_fotografia", raise_exception=True)
 def fotografia_excluir(request, pk):
     fotografia = get_object_or_404(Fotografia, pk=pk)

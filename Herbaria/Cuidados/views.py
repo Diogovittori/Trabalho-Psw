@@ -12,6 +12,7 @@ def cuidado_listar(request):
     return render(request, "Plantas/cuidado_listar.html", {"cuidado": cuidado})
 
 
+@login_required
 @permission_required("cuidados.add_cuidados", raise_exception=True)
 def cuidado_criar(request):
     if request.method == "POST":
@@ -37,6 +38,7 @@ def cuidado_detalhar(request, pk):
     )
 
 
+@login_required
 @permission_required("cuidados.change_cuidados", raise_exception=True)
 def cuidado_editar(request, pk):
     cuidado = get_object_or_404(Cuidados, pk=pk)
@@ -55,6 +57,7 @@ def cuidado_editar(request, pk):
     )
 
 
+@login_required
 @permission_required("cuidados.delete_cuidados", raise_exception=True)
 def cuidado_excluir(request, pk):
     cuidado = get_object_or_404(Cuidados, pk=pk)

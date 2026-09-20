@@ -34,9 +34,7 @@ class Pessoa(User):
     data_nascimento = models.DateField(
         "data de nascimento", null=True, blank=True
     )
-    sexo = models.CharField(
-        "sexo", max_length=1, choices=Sexo.choices, blank=True
-    )
+    
     telefone = models.CharField("telefone", max_length=20, blank=True)
     numero = models.PositiveIntegerField("número", null=True, blank=True)
     bairro = models.CharField("bairro", max_length=100, blank=True)
