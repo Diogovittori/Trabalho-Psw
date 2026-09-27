@@ -1,24 +1,354 @@
-body { background: #f6f8f3; color: #344338; font-family: Arial, sans-serif; }
-a { color: #24653b; }
-a:focus-visible, button:focus-visible { outline: 3px solid #bd7611; outline-offset: 3px; }
-.herbaria-banner { background: #245437; }
-.navbar-brand { font-size: 1.8rem; font-weight: 700; }
-.card { border: 1px solid #dce5d9; border-radius: 12px; }
-.card-header { background: #eaf1e5; }
-.herbaria-foto { width: 100%; max-height: 540px; object-fit: contain; background: #edf2e9; }
-.herbaria-thumb { width: 100%; height: 200px; object-fit: cover; }
-.acoes { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.5rem 0; }
-.btn-success, .botao { background: #30683d; color: white; border-color: #30683d; }
-.botao { display: inline-block; padding: .5rem .9rem; border-radius: .25rem; }
-.botao:hover { color: white; background: #214b2b; }
-.botao.excluir { background: #a62c38; }
-/* Compatibilidade com os formulários e listas que já existem. */
-main input:not([type=checkbox]):not([type=radio]):not([type=submit]), main select, main textarea {
-  display: block; width: 100%; padding: .55rem; border: 1px solid #9caa9e; border-radius: .25rem;
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #edf4e9;
+  background-image: linear-gradient(rgba(243, 248, 239, .84), rgba(243, 248, 239, .84)), url("alazea/img/bg-img/3.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #707070;
 }
-main table { width: 100%; background: white; }
-main th, main td { padding: .7rem; border-bottom: 1px solid #dce5d9; }
-main .errorlist li { color: #a62c38; }
-main .helptext { font-size: .9rem; }
-.detalhes { padding: 1.5rem; background: white; border-radius: 12px; }
-@media(max-width: 575px) { h1 { font-size: 1.8rem; } main table { display: block; overflow-x: auto; } }
+
+body.herbaria-auth-page {
+  background-image: linear-gradient(rgba(243, 248, 239, .88), rgba(243, 248, 239, .88)), url("alazea/img/bg-img/6.jpg");
+}
+
+a { color: #477b36; }
+a:hover, a:focus { color: #303030; }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid #70c745;
+  outline-offset: 3px;
+}
+
+.herbaria-header {
+  position: relative;
+  z-index: 2;
+  background: #fbfdf9;
+  border-bottom: 1px solid #e8eee5;
+  box-shadow: 0 2px 12px rgba(48, 48, 48, .05);
+}
+
+.herbaria-header .navbar {
+  min-height: 82px;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+.herbaria-header .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2rem;
+  color: #303030;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.herbaria-brand-mark {
+  width: 34px;
+  height: 34px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+.herbaria-nav-links .nav-link,
+.herbaria-account .nav-link {
+  padding: .7rem .8rem;
+  color: #505b4e;
+  font-size: 16px;
+  font-weight: 500;
+}
+.herbaria-nav-links .nav-link:hover,
+.herbaria-nav-links .nav-link:focus,
+.herbaria-account .nav-link:hover,
+.herbaria-account .nav-link:focus { color: #70c745; }
+.herbaria-account {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+.herbaria-account form { margin: 0; }
+.herbaria-account form button[type=submit] { transition: color 250ms ease, background-color 250ms ease, border-color 250ms ease; }
+.herbaria-account form button[type=submit]:hover,
+.herbaria-account form button[type=submit]:focus {
+  color: #fff;
+  background-color: #b84a4a;
+  border-color: #b84a4a;
+}
+.herbaria-username {
+  margin: 0 .75rem;
+  color: #707070;
+  font-size: 14px;
+}
+
+.btn-success,
+.btn-success:not(:disabled):not(.disabled) {
+  background-color: #70c745;
+  border-color: #70c745;
+}
+.btn-success:hover,
+.btn-success:not(:disabled):not(.disabled):hover {
+  background-color: #5aa936;
+  border-color: #5aa936;
+}
+.btn-outline-success { color: #5aa936; border-color: #70c745; }
+.btn-outline-success:hover { background: #70c745; border-color: #70c745; }
+
+.herbaria-banner {
+  position: relative;
+  overflow: hidden;
+  padding: 25px 0 27px;
+  background:
+    linear-gradient(105deg, rgba(246, 250, 242, .97) 0%, rgba(246, 250, 242, .91) 54%, rgba(231, 241, 222, .76) 100%),
+    url("alazea/img/bg-img/1.jpg") center 45% / cover no-repeat;
+  border-bottom: 1px solid #e4ebdf;
+}
+.herbaria-banner-kicker {
+  margin: 0 0 2px;
+  color: #70c745;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+.herbaria-banner-title {
+  color: #303030;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.herbaria-main {
+  flex: 1 0 auto;
+  width: 100%;
+  padding-top: 48px;
+  padding-bottom: 64px;
+}
+.herbaria-main > h1,
+.herbaria-main > h2 {
+  margin-bottom: 1.25rem;
+  color: #303030;
+  font-size: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.herbaria-main h3,
+.herbaria-main h4,
+.herbaria-main h5 { color: #303030; }
+
+.page-actions,
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  flex-wrap: wrap;
+  margin: 0 0 1.5rem;
+}
+.page-actions .btn { min-width: 145px; }
+
+.herbaria-main .card {
+  overflow: hidden;
+  border: 1px solid #e5ebe1;
+  border-radius: 4px;
+  box-shadow: 0 5px 18px rgba(48, 48, 48, .045);
+}
+.herbaria-main .card-body { padding: 1.5rem; }
+.herbaria-main .card-header {
+  background: #f1f6ed;
+  border-bottom-color: #e5ebe1;
+}
+.herbaria-main .list-group-item { border-color: #e8eee5; }
+.herbaria-main .badge-success { background-color: #70c745; }
+.herbaria-main dt { color: #303030; }
+.herbaria-main dd { margin-bottom: .8rem; }
+
+.herbaria-main .table-responsive {
+  margin-top: .5rem;
+  border: 1px solid #e5ebe1;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(48, 48, 48, .045);
+}
+.herbaria-main table {
+  width: 100%;
+  margin: 0;
+  color: #606a5d;
+}
+.herbaria-main .table thead th {
+  padding: .9rem 1rem;
+  border-top: 0;
+  border-bottom: 1px solid #e5ebe1;
+  background: #f1f6ed;
+  color: #303030;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.herbaria-main .table td {
+  padding: .85rem 1rem;
+  border-color: #edf1ea;
+  vertical-align: middle;
+}
+.herbaria-main .table-hover tbody tr:hover { background: #f8fbf6; }
+.acoes-tabela { min-width: 245px; white-space: nowrap; }
+.botao {
+  display: inline-block;
+  margin: .1rem;
+  padding: .38rem .65rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+}
+.botao:hover, .botao:focus { color: #fff; text-decoration: none; }
+.botao.visualizar { background: #70c745; }
+.botao.visualizar:hover { background: #5aa936; }
+.botao.editar { background: #777f70; }
+.botao.editar:hover { background: #596152; }
+.botao.excluir { background: #b84a4a; }
+.botao.excluir:hover { background: #983838; }
+
+.herbaria-foto {
+  width: 100%;
+  max-height: 540px;
+  object-fit: contain;
+  background: #f1f5ee;
+}
+.herbaria-thumb {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.herbaria-list-thumb {
+  width: 86px;
+  height: 64px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.herbaria-main form:not(.search-form) {
+  max-width: 720px;
+  padding: 1.75rem;
+  border: 1px solid #e5ebe1;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(48, 48, 48, .045);
+}
+.herbaria-main form p { margin-bottom: 1.15rem; }
+.herbaria-main form label {
+  margin-bottom: .35rem;
+  color: #303030;
+  font-weight: 600;
+}
+.herbaria-main input:not([type=checkbox]):not([type=radio]):not([type=submit]),
+.herbaria-main select,
+.herbaria-main textarea {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  padding: .55rem .75rem;
+  border: 1px solid #d6dfd1;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #505b4e;
+}
+.herbaria-main textarea { min-height: 120px; }
+.herbaria-main input:focus,
+.herbaria-main select:focus,
+.herbaria-main textarea:focus {
+  border-color: #70c745;
+  box-shadow: 0 0 0 .15rem rgba(112, 199, 69, .18);
+  outline: 0;
+}
+.herbaria-main input[type=checkbox],
+.herbaria-main input[type=radio] { margin-right: .35rem; }
+.herbaria-main .helptext {
+  display: block;
+  margin-top: .45rem;
+  color: #707070;
+  font-size: 14px;
+}
+.herbaria-main .errorlist,
+.herbaria-main .erro,
+.herbaria-main .erros {
+  margin: .35rem 0;
+  color: #a83232;
+  font-weight: 600;
+}
+.herbaria-main form button[type=submit] {
+  min-height: 42px;
+  padding: .55rem 1.25rem;
+  border: 1px solid #70c745;
+  border-radius: 2px;
+  background: #70c745;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.herbaria-main form button[type=submit]:hover { background: #5aa936; }
+.detalhes {
+  padding: 1.5rem;
+  border: 1px solid #e5ebe1;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(48, 48, 48, .045);
+}
+.herbaria-main .detalhes form {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  flex-wrap: wrap;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.herbaria-main .detalhes form button[type=submit] { background: #b84a4a; border-color: #b84a4a; }
+.herbaria-main .detalhes form button[type=submit]:hover { background: #983838; }
+.detalhes .cancelar { background: #777f70; }
+.herbaria-main .alert { border-radius: 3px; }
+
+.herbaria-footer {
+  padding: 22px 0;
+  border-top: 1px solid #e5ebe1;
+  background: #fbfdf9;
+  color: #707070;
+}
+.herbaria-footer small { font-size: 14px; }
+.herbaria-footer a { color: #477b36; }
+
+@media (max-width: 991.98px) {
+  .herbaria-header .navbar {
+    min-height: 72px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .herbaria-header .navbar-collapse {
+    padding: .5rem 0 1rem;
+    border-top: 1px solid #edf1ea;
+  }
+  .herbaria-nav-links { margin-left: 0; }
+  .herbaria-account {
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+  .herbaria-account form { align-self: center; }
+}
+
+@media (max-width: 575.98px) {
+  .herbaria-header .navbar {
+    padding: .65rem 15px;
+  }
+  .herbaria-header .navbar-brand { margin-right: .5rem; font-size: 24px; }
+  .herbaria-main { padding-top: 32px; padding-bottom: 44px; }
+  .herbaria-main > h1,
+  .herbaria-main > h2 { font-size: 24px; }
+  .herbaria-banner { padding: 20px 0; }
+  .herbaria-banner-title { font-size: 19px; }
+  .herbaria-main form:not(.search-form) { padding: 1.15rem; }
+  .herbaria-main .card-body { padding: 1.15rem; }
+  .acoes-tabela { min-width: 225px; }
+}

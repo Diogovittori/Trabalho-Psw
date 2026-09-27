@@ -5,44 +5,59 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Herbaria{% endblock %}</title>
+  <link rel="icon" href="{% static 'Plantas/alazea/img/core-img/favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'Plantas/alazea/style.css' %}">
   <link rel="stylesheet" href="{% static 'Plantas/herbaria.css' %}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <a class="sr-only sr-only-focusable" href="#conteudo">Ir para o conteúdo</a>
-<header class="bg-white border-bottom">
-  <nav class="navbar navbar-expand-lg navbar-light container" aria-label="Menu principal">
-    <a class="navbar-brand" href="{% url 'plantas:planta_listar' %}">Herbaria</a>
+<header class="herbaria-header">
+  <nav class="navbar navbar-expand-lg navbar-light container-fluid" aria-label="Menu principal">
+    <a class="navbar-brand" href="{% url 'plantas:planta_listar' %}">
+      <img src="{% static 'Plantas/alazea/img/core-img/leaf.png' %}" alt="" class="herbaria-brand-mark">
+      <span>Herbaria</span>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu"
       aria-controls="menu" aria-expanded="false" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="menu">
-      <div class="navbar-nav mr-auto">
+      <div class="navbar-nav herbaria-nav-links">
         <a class="nav-link" href="{% url 'plantas:planta_listar' %}">Plantas</a>
         <a class="nav-link" href="{% url 'plantas:categoria_listar' %}">Categorias</a>
         <a class="nav-link" href="{% url 'plantas:cuidado_listar' %}">Cuidados</a>
         <a class="nav-link" href="{% url 'plantas:fotografia_listar' %}">Fotografias</a>
       </div>
       {% if user.is_authenticated %}
-        {% if user.is_staff %}<a class="nav-link" href="{% url 'usuario_cadastrar' %}">Cadastrar usuário</a>{% endif %}
-        <span class="mr-3">{{ user.username }}</span>
-        <form method="post" action="{% url 'logout' %}">
-          {% csrf_token %}<button class="btn btn-outline-success" type="submit">Sair</button>
-        </form>
+        <div class="herbaria-account">
+          {% if user.is_staff %}<a class="nav-link" href="{% url 'usuario_cadastrar' %}">Cadastrar usuário</a>{% endif %}
+          <span class="herbaria-username">{{ user.username }}</span>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}<button class="btn btn-outline-success btn-sm" type="submit">Sair</button>
+          </form>
+        </div>
       {% else %}
-        <a class="nav-link" href="{% url 'login' %}">Entrar</a>
-        <a class="nav-link" href="{% url 'usuario_cadastrar' %}">Cadastrar-se</a>
+        <div class="herbaria-account">
+          <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+          <a class="btn btn-success btn-sm" href="{% url 'usuario_cadastrar' %}">Cadastrar-se</a>
+        </div>
       {% endif %}
     </div>
   </nav>
 </header>
-<div class="herbaria-banner"><div class="container py-4"><p class="mb-0 text-white">HERBARIA · Conhecer, cultivar e cuidar</p></div></div>
-<main class="container py-5" id="conteudo">
+<section class="herbaria-banner">
+  <div class="container">
+    <p class="herbaria-banner-kicker">HERBARIA</p>
+    <p class="herbaria-banner-title mb-0">Conhecer, cultivar e cuidar</p>
+  </div>
+</section>
+<main class="container herbaria-main" id="conteudo">
   {% for message in messages %}
     <div role="status" class="alert {% if message.level == 40 %}alert-danger{% elif message.level == 30 %}alert-warning{% elif message.level == 25 %}alert-success{% else %}alert-info{% endif %}">{{ message }}</div>
   {% endfor %}
   {% block content %}{% endblock %}
 </main>
-<footer class="container border-top py-4"><small>Herbaria · Tema adaptado de Alazea / <a href="https://colorlib.com">Colorlib</a></small></footer>
+<footer class="herbaria-footer">
+  <div class="container"><small>Herbaria <span aria-hidden="true">·</span> Tema adaptado de Alazea / <a href="https://colorlib.com">Colorlib</a></small></div>
+</footer>
 <script src="{% static 'Plantas/alazea/js/jquery/jquery-2.2.4.min.js' %}"></script>
 <script src="{% static 'Plantas/alazea/js/bootstrap/popper.min.js' %}"></script>
 <script src="{% static 'Plantas/alazea/js/bootstrap/bootstrap.min.js' %}"></script>

@@ -2,10 +2,11 @@
 {% block title %}Categorias | Herbaria{% endblock %}
 {% block content %}
 <h2>Categorias</h2>
-{% if perms.categoria.add_categoria %}<a class="acoes" href="{% url 'plantas:categoria_criar' %}">Nova categoria</a>{% endif %}
-<table><thead><tr><th>Nome</th><th>Descrição</th><th>Plantas</th><th></th></tr></thead><tbody>
+{% if perms.categoria.add_categoria %}<div class="page-actions"><a class="btn btn-success" href="{% url 'plantas:categoria_criar' %}">Nova categoria</a></div>{% endif %}
+<div class="table-responsive"><table class="table table-hover">
+<thead><tr><th scope="col">Nome</th><th scope="col">Descrição</th><th scope="col">Plantas</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead><tbody>
 {% for categoria in categorias %}
 <tr><td>{{ categoria.nome }}</td><td>{{ categoria.descricao|default:"—" }}</td><td>{{ categoria.plantas.count }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:categoria_detalhar' categoria.pk %}">Visualizar</a>{% if perms.categoria.change_categoria %}<a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a>{% endif %}{% if perms.categoria.delete_categoria %}<a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a>{% endif %}</td></tr>
 {% empty %}<tr><td colspan="4">Nenhuma categoria cadastrada.</td></tr>{% endfor %}
-</tbody></table>
+</tbody></table></div>
 {% endblock %}

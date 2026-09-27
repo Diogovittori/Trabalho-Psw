@@ -2,10 +2,11 @@
 {% block title %}Cuidados | Herbaria{% endblock %}
 {% block content %}
 <h2>Cuidados</h2>
-{% if perms.cuidados.add_cuidados %}<a class="acoes" href="{% url 'plantas:cuidado_criar' %}">Novo cuidado</a>{% endif %}
-<table><thead><tr><th>Planta</th><th>Data</th><th>Cuidado</th><th>Observações</th><th></th></tr></thead><tbody>
+{% if perms.cuidados.add_cuidados %}<div class="page-actions"><a class="btn btn-success" href="{% url 'plantas:cuidado_criar' %}">Novo cuidado</a></div>{% endif %}
+<div class="table-responsive"><table class="table table-hover">
+<thead><tr><th scope="col">Planta</th><th scope="col">Data</th><th scope="col">Cuidado</th><th scope="col">Observações</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead><tbody>
 {% for cuidado in cuidados %}
 <tr><td>{{ cuidado.planta }}</td><td>{{ cuidado.data|date:"d/m/Y" }}</td><td>{{ cuidado.get_tipos_display }}</td><td>{{ cuidado.observacoes|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:cuidado_detalhar' cuidado.pk %}">Visualizar</a>{% if perms.cuidados.change_cuidados %}<a class="botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a>{% endif %}{% if perms.cuidados.delete_cuidados %}<a class="botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a>{% endif %}</td></tr>
 {% empty %}<tr><td colspan="5">Nenhum cuidado cadastrado.</td></tr>{% endfor %}
-</tbody></table>
+</tbody></table></div>
 {% endblock %}
