@@ -1,7 +1,20 @@
 {% extends "Plantas/base.html" %}
 {% block title %}{{ categoria.nome }} | Herbaria{% endblock %}
 {% block content %}
-<h2>{{ categoria.nome }}</h2>
-<dl class="detalhes"><dt>Descrição</dt><dd>{{ categoria.descricao|default:"—" }}</dd><dt>Plantas cadastradas</dt><dd>{{ categoria.plantas.count }}</dd></dl>
-<p>{% if perms.categoria.change_categoria %}<a class="botao editar" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a>{% endif %} {% if perms.categoria.delete_categoria %}<a class="botao excluir" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a>{% endif %}</p>
+<h1>{{ categoria.nome }}</h1>
+<div class="acoes">
+<a class="btn btn-outline-secondary" href="{% url 'plantas:categoria_listar' %}">Voltar à lista</a>
+{% if perms.categoria.change_categoria %}<a class="btn btn-success" href="{% url 'plantas:categoria_editar' categoria.pk %}">Editar</a>{% endif %}
+{% if perms.categoria.delete_categoria %}<a class="btn btn-outline-danger" href="{% url 'plantas:categoria_excluir' categoria.pk %}">Excluir</a>{% endif %}
+</div>
+<section class="card mb-4"><div class="card-body"><h2 class="h4">Descrição</h2>{{ categoria.descricao|default:"Sem descrição."|linebreaks }}</div></section>
+<h2 class="h4">Plantas nesta categoria ({{ categoria.plantas.count }})</h2>
+<div class="row">
+{% for planta in categoria.plantas.all %}
+  <div class="col-md-6 col-lg-4 mb-4"><article class="card h-100"><div class="card-body">
+    <h3 class="h5">{{ planta.nome_popular }}</h3><p><em>{{ planta.nome_cientifico }}</em></p>
+    <a class="btn btn-outline-success" href="{% url 'plantas:planta_detalhar' planta.pk %}">Ver detalhes</a>
+  </div></article></div>
+{% empty %}<div class="col-12"><p class="alert alert-info">Nenhuma planta nesta categoria.</p></div>{% endfor %}
+</div>
 {% endblock %}

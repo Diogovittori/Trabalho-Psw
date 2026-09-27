@@ -1,7 +1,19 @@
 {% extends "Plantas/base.html" %}
 {% block title %}Cuidado de {{ cuidado.planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
-<h2>Cuidado de {{ cuidado.planta.nome_popular }}</h2>
-<dl class="detalhes"><dt>Planta</dt><dd>{{ cuidado.planta }}</dd><dt>Data</dt><dd>{{ cuidado.data|date:"d/m/Y" }}</dd><dt>Tipos</dt><dd>{{ cuidado.get_tipos_display }}</dd><dt>Observações</dt><dd>{{ cuidado.observacoes|default:"—" }}</dd></dl>
-<p>{% if perms.cuidados.change_cuidados %}<a class="botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a>{% endif %} {% if perms.cuidados.delete_cuidados %}<a class="botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a>{% endif %}</p>
+<h1>Cuidado de {{ cuidado.planta.nome_popular }}</h1>
+<div class="acoes">
+<a class="btn btn-outline-secondary" href="{% url 'plantas:cuidado_listar' %}">Voltar à lista</a>
+{% if perms.cuidados.change_cuidados %}<a class="btn btn-success" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a>{% endif %}
+{% if perms.cuidados.delete_cuidados %}<a class="btn btn-outline-danger" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a>{% endif %}
+</div>
+<section class="card"><div class="card-body">
+<h2 class="h4">Registro de cuidado</h2>
+<dl class="row">
+  <dt class="col-sm-3">Planta</dt><dd class="col-sm-9"><a href="{% url 'plantas:planta_detalhar' cuidado.planta.pk %}">{{ cuidado.planta }}</a></dd>
+  <dt class="col-sm-3">Data</dt><dd class="col-sm-9">{{ cuidado.data|date:"d/m/Y" }}</dd>
+  <dt class="col-sm-3">Tipos de cuidado</dt><dd class="col-sm-9">{% for tipo in cuidado.tipo.all %}<span class="badge badge-success mr-1">{{ tipo.nome }}</span>{% empty %}Nenhum tipo informado.{% endfor %}</dd>
+</dl>
+<h3 class="h5">Observações</h3>{{ cuidado.observacoes|default:"Sem observações."|linebreaks }}
+</div></section>
 {% endblock %}

@@ -1,0 +1,24 @@
+body { background: #f6f8f3; color: #344338; font-family: Arial, sans-serif; }
+a { color: #24653b; }
+a:focus-visible, button:focus-visible { outline: 3px solid #bd7611; outline-offset: 3px; }
+.herbaria-banner { background: #245437; }
+.navbar-brand { font-size: 1.8rem; font-weight: 700; }
+.card { border: 1px solid #dce5d9; border-radius: 12px; }
+.card-header { background: #eaf1e5; }
+.herbaria-foto { width: 100%; max-height: 540px; object-fit: contain; background: #edf2e9; }
+.herbaria-thumb { width: 100%; height: 200px; object-fit: cover; }
+.acoes { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.5rem 0; }
+.btn-success, .botao { background: #30683d; color: white; border-color: #30683d; }
+.botao { display: inline-block; padding: .5rem .9rem; border-radius: .25rem; }
+.botao:hover { color: white; background: #214b2b; }
+.botao.excluir { background: #a62c38; }
+/* Compatibilidade com os formulários e listas que já existem. */
+main input:not([type=checkbox]):not([type=radio]):not([type=submit]), main select, main textarea {
+  display: block; width: 100%; padding: .55rem; border: 1px solid #9caa9e; border-radius: .25rem;
+}
+main table { width: 100%; background: white; }
+main th, main td { padding: .7rem; border-bottom: 1px solid #dce5d9; }
+main .errorlist li { color: #a62c38; }
+main .helptext { font-size: .9rem; }
+.detalhes { padding: 1.5rem; background: white; border-radius: 12px; }
+@media(max-width: 575px) { h1 { font-size: 1.8rem; } main table { display: block; overflow-x: auto; } }

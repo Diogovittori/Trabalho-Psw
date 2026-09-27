@@ -1,7 +1,22 @@
 {% extends "Plantas/base.html" %}
 {% block title %}Fotografia de {{ fotografia.planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
-<h2>Fotografia de {{ fotografia.planta.nome_popular }}</h2>
-<div class="detalhes"><p><img src="{{ fotografia.imagem.url }}" alt="{{ fotografia.planta.nome_popular }}" style="max-width: 100%; max-height: 500px;"></p><dl><dt>Planta</dt><dd>{{ fotografia.planta }}</dd><dt>Data da foto</dt><dd>{{ fotografia.data_foto|date:"d/m/Y" }}</dd></dl></div>
-<p>{% if perms.fotografia.change_fotografia %}<a class="botao editar" href="{% url 'plantas:fotografia_editar' fotografia.pk %}">Editar</a>{% endif %} {% if perms.fotografia.delete_fotografia %}<a class="botao excluir" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a>{% endif %}</p>
+<h1>Fotografia de {{ fotografia.planta.nome_popular }}</h1>
+<div class="acoes">
+<a class="btn btn-outline-secondary" href="{% url 'plantas:fotografia_listar' %}">Voltar à lista</a>
+{% if perms.fotografia.change_fotografia %}<a class="btn btn-success" href="{% url 'plantas:fotografia_editar' fotografia.pk %}">Editar</a>{% endif %}
+{% if perms.fotografia.delete_fotografia %}<a class="btn btn-outline-danger" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a>{% endif %}
+</div>
+<div class="row">
+  <div class="col-lg-8 mb-4"><figure class="card p-3">
+    {% if fotografia.imagem %}<a href="{{ fotografia.imagem.url }}"><img class="herbaria-foto rounded" src="{{ fotografia.imagem.url }}" alt="{{ fotografia.planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}"></a>
+    {% else %}<p class="alert alert-info">Imagem não informada.</p>{% endif %}
+    <figcaption class="mt-3">{{ fotografia.planta.nome_popular }} · {{ fotografia.data_foto|date:"d/m/Y" }}</figcaption>
+  </figure></div>
+  <div class="col-lg-4"><section class="card"><div class="card-body">
+    <h2 class="h4">Informações</h2><dl>
+    <dt>Planta</dt><dd><a href="{% url 'plantas:planta_detalhar' fotografia.planta.pk %}">{{ fotografia.planta }}</a></dd>
+    <dt>Data da foto</dt><dd>{{ fotografia.data_foto|date:"d/m/Y" }}</dd></dl>
+  </div></section></div>
+</div>
 {% endblock %}
