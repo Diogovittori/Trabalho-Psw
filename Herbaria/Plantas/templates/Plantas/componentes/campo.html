@@ -1,0 +1,6 @@
+{% if grupo %}<fieldset class="mb-3"><legend class="h6">{{ field.label }}:</legend>{% else %}<div class="mb-3">{{ field.label_tag }}{% endif %}
+{% if not field.field.required %}<small class="text-muted">(opcional)</small>{% endif %}
+{{ widget }}
+{% if field.help_text %}<div class="helptext" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+{% if field.errors %}<div class="errorlist" id="{{ field.auto_id }}_errors" role="alert">{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}
+{% if grupo %}</fieldset>{% else %}</div>{% endif %}

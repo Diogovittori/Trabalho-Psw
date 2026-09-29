@@ -3,10 +3,12 @@
 {% block title %}{{ titulo }} | Herbaria{% endblock %}
 {% block content %}
 <h2>{{ titulo }}</h2>
+<p>{{ form.descricao_formulario }}</p>
+<p class="text-muted">Preencha os campos abaixo. Os campos opcionais estão identificados.</p>
 <form method="post"{% if multipart %} enctype="multipart/form-data"{% endif %}>
     {% csrf_token %}
     {{ form|bootstrap_form }}
-    <button class="btn alazea-btn" type="submit">Salvar</button>
+    <button class="btn alazea-btn{% if not form.instance.pk %} herbaria-botao-cadastro{% endif %}" type="submit">{% if form.instance.pk %}Salvar alterações{% else %}{{ titulo }}{% endif %}</button>
     {% url_listagem as voltar %}<a class="btn btn-outline-secondary ml-2" href="{{ voltar }}">Cancelar</a>
 </form>
 {% endblock %}

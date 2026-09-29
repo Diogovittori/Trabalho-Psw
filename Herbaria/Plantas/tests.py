@@ -205,7 +205,11 @@ class PlantaViewTests(TestCase):
                 form = resposta.context["form"]
                 for campo, valor in (("nome_popular", popular), ("nome_cientifico", cientifico)):
                     self.assertEqual(form[campo].value(), valor)
-                    self.assertContains(resposta, str(form[campo]), html=True)
+                    self.assertContains(
+                        resposta,
+                        form[campo].as_widget(attrs={"class": "form-control"}),
+                        html=True,
+                    )
                 resposta = self.client.get(reverse("plantas:planta_listar"))
                 self.assertContains(resposta, f'<h2 class="h4"><a href="{reverse("plantas:planta_detalhar", args=[planta.pk])}">{popular}</a></h2>', html=True)
                 self.assertContains(resposta, f'<p class="herbaria-scientific"><em>{cientifico}</em></p>', html=True)

@@ -4,14 +4,14 @@
 {% block body_class %}herbaria-auth-page{% endblock %}
 {% block content %}
 <h2>Entrar no Herbaria</h2>
-<p>Use seu nome de usuário e sua senha.</p>
+<p>Use o nome de usuário escolhido no cadastro e sua senha para acessar o sistema.</p>
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form|bootstrap_form }}
     {% if next %}
         <input type="hidden" name="next" value="{{ next }}">
     {% endif %}
-    <button class="btn alazea-btn" type="submit">Entrar</button>
+    <button class="btn alazea-btn herbaria-botao-cadastro" type="submit">Entrar</button>
 </form>
 <p><a href="{% url 'usuario_cadastrar' %}">Ainda não possui uma conta? Cadastre-se.</a></p>
 {% endblock %}

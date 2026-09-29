@@ -1,0 +1,4 @@
+{% if form.errors %}<div class="alert alert-danger" role="alert">
+{% if form.non_field_errors %}{% for error in form.non_field_errors %}<p class="mb-0">{{ error }}</p>{% endfor %}{% else %}Confira os campos indicados abaixo e tente novamente.{% endif %}
+{% for field in form.hidden_fields %}{{ field.errors }}{% endfor %}
+</div>{% endif %}

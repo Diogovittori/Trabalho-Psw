@@ -1,6 +1,7 @@
 from django import forms, template
 from django.forms import CheckboxInput, CheckboxSelectMultiple, RadioSelect
 from django.urls import reverse
+from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
 register = template.Library()
@@ -18,24 +19,22 @@ def _render_field(field):
     if field.errors:
         classes.append("is-invalid")
 
-    widget_html = field.as_widget(attrs={"class": " ".join(classes)})
-    errors_html = ""
-    if field.errors:
-        errors_html = "<div class=\"errorlist\">" + "".join(
-            f"<div class=\"invalid-feedback\">{error}</div>" for error in field.errors
-        ) + "</div>"
-
-    help_html = ""
+    if field.is_hidden:
+        return str(field)
+    attrs = {"class": " ".join(classes)}
+    described_by = []
     if field.help_text:
-        help_html = f'<small class="helptext">{field.help_text}</small>'
-
-    return (
-        f'<div class="mb-3">'
-        f'{widget_html}'
-        f'{errors_html}'
-        f'{help_html}'
-        f'</div>'
-    )
+        described_by.append(f"{field.auto_id}_helptext")
+    if field.errors:
+        described_by.append(f"{field.auto_id}_errors")
+        attrs["aria-invalid"] = "true"
+    if described_by:
+        attrs["aria-describedby"] = " ".join(described_by)
+    return render_to_string("Plantas/componentes/campo.html", {
+        "field": field,
+        "widget": field.as_widget(attrs=attrs),
+        "grupo": isinstance(field.field.widget, (CheckboxSelectMultiple, RadioSelect)),
+    })
 
 
 @register.filter
@@ -45,7 +44,8 @@ def bootstrap_field(field):
 
 @register.filter
 def bootstrap_form(form):
-    html = "".join(_render_field(field) for field in form)
+    html = render_to_string("Plantas/componentes/erros_formulario.html", {"form": form})
+    html += "".join(_render_field(field) for field in form)
     return mark_safe(html)
 
 

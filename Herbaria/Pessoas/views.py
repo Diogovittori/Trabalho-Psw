@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from django.db import IntegrityError, transaction
 from django.shortcuts import redirect, render
@@ -11,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_http_methods, require_POST
 
-from .forms import PessoaCadastroForm
+from .forms import LoginForm, PessoaCadastroForm
 
 
 @sensitive_post_parameters("password1", "password2")
@@ -54,13 +53,13 @@ def login_view(request):
         next_url = ""
 
     if request.method == "POST":
-        form = AuthenticationForm(request=request, data=request.POST)
+        form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
             # AuthenticationForm já verificou credenciais e usuário ativo.
             login(request, form.get_user())
             return redirect(next_url or settings.LOGIN_REDIRECT_URL)
     else:
-        form = AuthenticationForm(request=request)
+        form = LoginForm(request=request)
 
     return render(request, "registration/login.html", {
         "form": form,

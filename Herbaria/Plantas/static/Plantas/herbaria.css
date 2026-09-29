@@ -366,11 +366,43 @@ body { background: #f6f8f4; }
 .herbaria-main .alazea-btn:hover, .herbaria-main .alazea-btn:focus,
 .herbaria-main form button.alazea-btn:hover, .herbaria-main form button.alazea-btn:focus { color: #fff; background: #303030; border-color: #303030; }
 .herbaria-main form button.alazea-btn { padding: 0 24px; min-height: 46px; color: #17360f; }
+.herbaria-main form:not(.search-form) button.herbaria-botao-cadastro[type=submit] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 46px;
+  padding: 12px 24px;
+  line-height: 1.25;
+  text-align: center;
+}
 .herbaria-main .form-control { font-family: inherit; height: auto; }
 .herbaria-main .form-control.is-invalid { border-color: #b84a4a; }
 .herbaria-main input[type=file] { padding: 10px; background: #f5f8f1; }
 .herbaria-main fieldset { padding: 16px; border: 1px solid #e5ebe1; margin-bottom: 20px; }
 .herbaria-main legend { font-size: 18px; width: auto; padding: 0 6px; }
+/* Mantém o grupo de cuidados no fluxo normal, sem o posicionamento absoluto do Bootstrap. */
+.herbaria-main #id_tipo {
+  position: static;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+.herbaria-main #id_tipo label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  line-height: 1.5;
+  white-space: normal;
+}
+.herbaria-main #id_tipo input[type=checkbox] {
+  position: static;
+  flex: 0 0 auto;
+  margin: .3em 0 0;
+}
 .herbaria-main input[type=checkbox], .herbaria-main input[type=radio] { accent-color: #477b36; }
 .herbaria-main input[type=checkbox]:focus-visible, .herbaria-main input[type=radio]:focus-visible { outline: 2px solid #477b36; outline-offset: 3px; }
 .herbaria-main .botao.visualizar { background: #edf5e8; color: #355e26; border-color: #c7dbbd; }

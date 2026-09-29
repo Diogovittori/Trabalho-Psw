@@ -4,23 +4,12 @@
 {% block body_class %}herbaria-auth-page{% endblock %}
 {% block content %}
 <h2>{{ titulo }}</h2>
+<p>Preencha seus dados e crie uma senha para acessar o Herbaria.</p>
+<p class="text-muted">Todos os campos são obrigatórios.</p>
 <form method="post">
     {% csrf_token %}
-    {% if form.non_field_errors %}
-        <div class="erros">{{ form.non_field_errors }}</div>
-    {% endif %}
-    {% for field in form %}
-        <p>
-            {{ field.label_tag }}
-            {{ field|bootstrap_field }}
-            {% for error in field.errors %}
-                <span class="erro">{{ error }}</span>
-            {% endfor %}
-            {% if field.help_text %}
-                <small class="helptext">{{ field.help_text }}</small>
-            {% endif %}
-        </p>
-    {% endfor %}
-    <button class="btn alazea-btn" type="submit">Cadastrar</button>
+    {{ form|bootstrap_form }}
+    <button class="btn alazea-btn herbaria-botao-cadastro" type="submit">Cadastrar usuário</button>
+    <a class="btn btn-outline-secondary ml-2" href="{% url 'login' %}">Voltar para o login</a>
 </form>
 {% endblock %}
