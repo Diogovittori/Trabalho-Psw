@@ -1,10 +1,7 @@
 from django import forms
 
 from .models import Planta
-
-
-class DateInput(forms.DateInput):
-    input_type = "date"
+from .widgets import DateInput
 
 
 class PlantaForm(forms.ModelForm):

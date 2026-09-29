@@ -1,0 +1,11 @@
+<div class="herbaria-search mb-4">
+  <form class="search-form herbaria-search-form" method="get" action="{{ request.path }}" role="search" aria-label="{% if busca_global %}Pesquisar no herbário{% else %}Pesquisar nesta seção{% endif %}">
+    <label for="pesquisa-listagem">{% if busca_global %}Pesquisar em todos os registros{% else %}Pesquisar nesta seção{% endif %}</label>
+    <div class="input-group">
+      <input class="form-control" id="pesquisa-listagem" name="q" type="search" value="{{ q }}" maxlength="200" placeholder="{% if busca_global %}Nome, categoria, cuidado ou data{% else %}{{ pesquisa_placeholder|default:'Digite um nome ou termo' }}{% endif %}" aria-describedby="dica-pesquisa">
+      <div class="input-group-append"><button class="btn btn-success" type="submit"><i class="fa fa-search mr-1" aria-hidden="true"></i> Pesquisar</button></div>
+    </div>
+    <div class="herbaria-search-help"><small id="dica-pesquisa" class="text-muted">{% if busca_global %}Plantas, fotografias, cuidados e categorias.{% else %}{{ pesquisa_dica|default:'Pesquisa em todos os registros desta seção.' }}{% endif %}</small>
+    {% if q %}<a href="{{ request.path }}">Limpar</a>{% endif %}</div>
+  </form>
+</div>

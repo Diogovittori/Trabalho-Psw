@@ -8,7 +8,7 @@
     <form method="post">
         {% csrf_token %}
         <button class="excluir" type="submit">Sim, excluir</button>
-        <a class="botao cancelar" href="javascript:history.back()">Cancelar</a>
+        {% with rota='plantas:'|add:tipo|add:'_listar' %}<a class="botao cancelar" href="{% url rota %}">Cancelar</a>{% endwith %}
     </form>
 </div>
 {% endblock %}

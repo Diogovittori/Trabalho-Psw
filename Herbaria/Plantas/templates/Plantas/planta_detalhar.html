@@ -1,4 +1,5 @@
 {% extends "Plantas/base.html" %}
+{% load herbaria_ui %}
 {% block title %}{{ planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
 <h1>{{ planta.nome_popular }}</h1>
@@ -31,11 +32,11 @@
     </div></section>
   </div>
 </div>
-<section aria-labelledby="galeria"><h2 class="h4" id="galeria">Fotografias</h2><div class="row">
+<section aria-labelledby="galeria"><h2 class="h4" id="galeria">Fotografias</h2><div class="row herbaria-gallery">
 {% for fotografia in planta.fotografias.all %}
   <div class="col-sm-6 col-lg-4 mb-4"><article class="card h-100">
+    {% with imagem=fotografia.imagem|imagem_url %}{% if imagem %}<a class="portfolio-img" href="{{ imagem }}" aria-label="Ampliar fotografia de {{ planta.nome_popular }}"><img class="herbaria-thumb card-img-top" src="{{ imagem }}" alt="{{ planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}" loading="lazy"></a>{% else %}<div class="herbaria-image-empty">Imagem indisponível</div>{% endif %}{% endwith %}
     <a href="{% url 'plantas:fotografia_detalhar' fotografia.pk %}">
-      {% if fotografia.imagem %}<img class="herbaria-thumb card-img-top" src="{{ fotografia.imagem.url }}" alt="{{ planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}" loading="lazy">{% endif %}
       <div class="card-body">Ver fotografia · {{ fotografia.data_foto|date:"d/m/Y" }}</div>
     </a>
   </article></div>

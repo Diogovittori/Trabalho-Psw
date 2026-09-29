@@ -1,4 +1,5 @@
 {% extends "Plantas/base.html" %}
+{% load herbaria_ui %}
 {% block title %}Fotografia de {{ fotografia.planta.nome_popular }} | Herbaria{% endblock %}
 {% block content %}
 <h1>Fotografia de {{ fotografia.planta.nome_popular }}</h1>
@@ -8,9 +9,9 @@
 {% if perms.fotografia.delete_fotografia %}<a class="btn btn-outline-danger" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a>{% endif %}
 </div>
 <div class="row">
-  <div class="col-lg-8 mb-4"><figure class="card p-3">
-    {% if fotografia.imagem %}<a href="{{ fotografia.imagem.url }}"><img class="herbaria-foto rounded" src="{{ fotografia.imagem.url }}" alt="{{ fotografia.planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}"></a>
-    {% else %}<p class="alert alert-info">Imagem não informada.</p>{% endif %}
+  <div class="col-lg-8 mb-4"><figure class="card p-3 herbaria-gallery">
+    {% with imagem=fotografia.imagem|imagem_url %}{% if imagem %}<a class="portfolio-img" href="{{ imagem }}" aria-label="Ampliar fotografia"><img class="herbaria-foto rounded" src="{{ imagem }}" alt="{{ fotografia.planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}"></a>
+    {% else %}<p class="alert alert-info">Imagem indisponível.</p>{% endif %}{% endwith %}
     <figcaption class="mt-3">{{ fotografia.planta.nome_popular }} · {{ fotografia.data_foto|date:"d/m/Y" }}</figcaption>
   </figure></div>
   <div class="col-lg-4"><section class="card"><div class="card-body">

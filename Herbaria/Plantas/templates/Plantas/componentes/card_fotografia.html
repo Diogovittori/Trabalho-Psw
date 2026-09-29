@@ -1,0 +1,22 @@
+{% load herbaria_ui %}
+<div class="col-12 col-sm-6 col-lg-4 mb-4">
+  <article class="single-product-area card herbaria-record h-100">
+    <div class="product-img herbaria-card-image herbaria-photo-image">
+      {% with imagem=fotografia.imagem|imagem_url %}
+      {% if imagem %}<a class="portfolio-img" href="{{ imagem }}" aria-label="Ampliar fotografia de {{ fotografia.planta.nome_popular }}"><img src="{{ imagem }}" alt="{{ fotografia.planta.nome_popular }} em {{ fotografia.data_foto|date:'d/m/Y' }}" loading="lazy"><span class="herbaria-zoom"><i class="fa fa-expand" aria-hidden="true"></i> Ampliar</span></a>
+      {% else %}<span class="herbaria-image-empty"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Imagem indisponível</span></span>{% endif %}
+      {% endwith %}
+    </div>
+    <div class="product-info card-body d-flex flex-column">
+      <span class="herbaria-card-category">{{ fotografia.planta.categoria|default:"Sem categoria" }}</span>
+      <h2 class="h4"><a href="{% url 'plantas:planta_detalhar' fotografia.planta.pk %}">{{ fotografia.planta.nome_popular }}</a></h2>
+      <p class="herbaria-scientific"><em>{{ fotografia.planta.nome_cientifico }}</em></p>
+      <p><i class="fa fa-calendar mr-1" aria-hidden="true"></i> <time datetime="{{ fotografia.data_foto|date:'Y-m-d' }}">{{ fotografia.data_foto|date:"d/m/Y" }}</time></p>
+      <div class="herbaria-card-actions mt-auto">
+        <a class="btn btn-sm btn-outline-success" href="{% url 'plantas:fotografia_detalhar' fotografia.pk %}">Visualizar</a>
+        {% if perms.fotografia.change_fotografia %}<a class="btn btn-sm btn-outline-secondary" href="{% url 'plantas:fotografia_editar' fotografia.pk %}">Editar</a>{% endif %}
+        {% if perms.fotografia.delete_fotografia %}<a class="btn btn-sm btn-outline-danger" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a>{% endif %}
+      </div>
+    </div>
+  </article>
+</div>

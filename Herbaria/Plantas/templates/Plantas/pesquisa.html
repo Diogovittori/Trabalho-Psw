@@ -1,0 +1,31 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Pesquisa | Herbaria{% endblock %}
+{% block content %}
+<div class="section-heading text-left herbaria-section-heading"><h1>Pesquisa no herbário</h1><p>Encontre plantas, fotografias, cuidados e categorias.</p></div>
+{% include "Plantas/componentes/busca_tabela.html" with busca_global=True %}
+{% if q %}
+<p role="status">{{ total }} resultado{{ total|pluralize:"s" }} para <strong>“{{ q }}”</strong>.</p>
+{% for grupo in grupos %}{% if grupo.total %}
+<section class="mb-5" aria-labelledby="resultado-{{ grupo.entidade }}">
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    <h2 id="resultado-{{ grupo.entidade }}" class="h3">{{ grupo.titulo }} <span class="badge badge-light">{{ grupo.total }}</span></h2>
+    {% with rota='plantas:'|add:grupo.rota|add:'_listar' %}<a href="{% url rota %}?q={{ q|urlencode }}">Ver todos os resultados <i class="fa fa-angle-right" aria-hidden="true"></i></a>{% endwith %}
+  </div>
+  <div class="row herbaria-gallery">
+    {% for objeto in grupo.objetos %}
+      {% if grupo.entidade == 'plantas' %}{% include "Plantas/componentes/card_planta.html" with planta=objeto %}
+      {% elif grupo.entidade == 'fotografias' %}{% include "Plantas/componentes/card_fotografia.html" with fotografia=objeto %}
+      {% else %}<div class="col-12 col-md-6 mb-3"><article class="card h-100"><div class="card-body">
+        {% if grupo.entidade == 'cuidados' %}
+        <h3 class="h5"><a href="{% url 'plantas:cuidado_detalhar' objeto.pk %}">{{ objeto.planta.nome_popular }}</a></h3>
+        <p>{{ objeto.get_tipos_display }} · {{ objeto.data|date:"d/m/Y" }}</p><p>{{ objeto.observacoes|truncatechars:180 }}</p>
+        <a href="{% url 'plantas:cuidado_detalhar' objeto.pk %}">Visualizar cuidado</a>
+        {% else %}<h3 class="h5"><a href="{% url 'plantas:categoria_detalhar' objeto.pk %}">{{ objeto.nome }}</a></h3><p>{{ objeto.descricao|truncatechars:180 }}</p><a href="{% url 'plantas:categoria_detalhar' objeto.pk %}">Visualizar categoria</a>{% endif %}
+      </div></article></div>{% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}{% endfor %}
+{% if not total %}<div class="alert alert-info">Nenhum registro encontrado. Experimente outro nome, tipo de cuidado ou data.</div>{% endif %}
+{% else %}<div class="alert alert-info">Digite um termo e clique em Pesquisar. Para datas, use dd/mm/aaaa.</div>{% endif %}
+{% endblock %}

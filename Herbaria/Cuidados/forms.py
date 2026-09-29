@@ -1,10 +1,8 @@
 from django import forms
 
+from Plantas.widgets import DateInput
+
 from .models import Cuidados, TipoDeCuidado
-
-
-class DateInput(forms.DateInput):
-    input_type = "date"
 
 
 class CuidadosForm(forms.ModelForm):

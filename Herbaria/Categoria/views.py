@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CategoriaForm
 from .models import Categoria
+from Plantas.pesquisa import contexto_listagem
 
 
 @login_required
 def categoria_listar(request):
-    categorias = Categoria.objects.prefetch_related("plantas")
+    categorias = Categoria.objects.prefetch_related("plantas").order_by("nome", "pk")
     return render(
-        request, "Plantas/categoria_listar.html", {"categorias": categorias}
+        request, "Plantas/categoria_listar.html", contexto_listagem(request, categorias, "categorias")
     )
 
 

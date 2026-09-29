@@ -4,12 +4,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CuidadosForm
 from .models import Cuidados
+from Plantas.pesquisa import contexto_listagem
 
 
 @login_required
 def cuidado_listar(request):
-    cuidados = Cuidados.objects.select_related("planta")
-    return render(request, "Plantas/cuidado_listar.html", {"cuidados": cuidados})
+    cuidados = Cuidados.objects.select_related("planta").prefetch_related("tipo").order_by("-data", "-pk")
+    return render(request, "Plantas/cuidado_listar.html", contexto_listagem(request, cuidados, "cuidados"))
 
 
 @login_required
@@ -32,7 +33,7 @@ def cuidado_criar(request):
 
 @login_required
 def cuidado_detalhar(request, pk):
-    cuidado = get_object_or_404(Cuidados.objects.select_related("planta"), pk=pk)
+    cuidado = get_object_or_404(Cuidados.objects.select_related("planta").prefetch_related("tipo"), pk=pk)
     return render(
         request, "Plantas/cuidado_detalhar.html", {"cuidado": cuidado}
     )

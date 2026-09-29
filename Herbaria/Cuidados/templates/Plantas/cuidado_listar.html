@@ -1,12 +1,14 @@
 {% extends "Plantas/base.html" %}
 {% block title %}Cuidados | Herbaria{% endblock %}
 {% block content %}
-<h2>Cuidados</h2>
-{% if perms.cuidados.add_cuidados %}<div class="page-actions"><a class="btn btn-success" href="{% url 'plantas:cuidado_criar' %}">Novo cuidado</a></div>{% endif %}
-<div class="table-responsive"><table class="table table-hover">
+<div class="section-heading text-left herbaria-section-heading"><h2>Cuidados</h2><p>Acompanhe cada cuidado e mantenha seu cultivo em dia.</p></div>
+{% if perms.cuidados.add_cuidados %}<div class="page-actions"><a class="btn alazea-btn" href="{% url 'plantas:cuidado_criar' %}">Novo cuidado</a></div>{% endif %}
+{% include "Plantas/componentes/busca_tabela.html" %}
+<div class="table-responsive"><table id="lista-registros" class="table table-hover">
 <thead><tr><th scope="col">Planta</th><th scope="col">Data</th><th scope="col">Cuidado</th><th scope="col">Observações</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead><tbody>
 {% for cuidado in cuidados %}
-<tr><td>{{ cuidado.planta }}</td><td>{{ cuidado.data|date:"d/m/Y" }}</td><td>{{ cuidado.get_tipos_display }}</td><td>{{ cuidado.observacoes|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:cuidado_detalhar' cuidado.pk %}">Visualizar</a>{% if perms.cuidados.change_cuidados %}<a class="botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a>{% endif %}{% if perms.cuidados.delete_cuidados %}<a class="botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a>{% endif %}</td></tr>
-{% empty %}<tr><td colspan="5">Nenhum cuidado cadastrado.</td></tr>{% endfor %}
+<tr><td>{{ cuidado.planta }}</td><td>{{ cuidado.data|date:"d/m/Y" }}</td><td>{{ cuidado.get_tipos_display }}</td><td>{{ cuidado.observacoes|default:"—" }}</td><td class="acoes-tabela"><a class="btn btn-sm btn-outline-success botao visualizar" href="{% url 'plantas:cuidado_detalhar' cuidado.pk %}">Visualizar</a>{% if perms.cuidados.change_cuidados %}<a class="btn btn-sm btn-outline-secondary botao editar" href="{% url 'plantas:cuidado_editar' cuidado.pk %}">Editar</a>{% endif %}{% if perms.cuidados.delete_cuidados %}<a class="btn btn-sm btn-outline-danger botao excluir" href="{% url 'plantas:cuidado_excluir' cuidado.pk %}">Excluir</a>{% endif %}</td></tr>
+{% empty %}<tr><td colspan="5">{% if q %}Nenhum cuidado encontrado para “{{ q }}”.{% else %}Nenhum cuidado cadastrado.{% endif %}</td></tr>{% endfor %}
 </tbody></table></div>
+{% include "Plantas/componentes/paginacao.html" %}
 {% endblock %}

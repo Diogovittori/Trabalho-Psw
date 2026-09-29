@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import FotografiaForm
 from .models import Fotografia
+from Plantas.pesquisa import contexto_listagem
 
 
 @login_required
 def fotografia_listar(request):
-    fotografias = Fotografia.objects.select_related("planta")
+    fotografias = Fotografia.objects.select_related("planta", "planta__categoria").order_by("-data_foto", "-pk")
     return render(
-        request, "Plantas/fotografia_listar.html", {"fotografias": fotografias}
+        request, "Plantas/fotografia_listar.html", contexto_listagem(request, fotografias, "fotografias")
     )
 
 

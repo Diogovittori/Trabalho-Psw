@@ -1,12 +1,13 @@
 {% extends "Plantas/base.html" %}
 {% block title %}Plantas | Herbaria{% endblock %}
 {% block content %}
-<h2>Plantas</h2>
-{% if perms.plantas.add_planta %}<div class="page-actions"><a class="btn btn-success" href="{% url 'plantas:planta_criar' %}">Nova planta</a></div>{% endif %}
-<div class="table-responsive"><table class="table table-hover">
-<thead><tr><th scope="col">Nome popular</th><th scope="col">Nome científico</th><th scope="col">Categoria</th><th scope="col">Plantio</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead><tbody>
+<div class="section-heading text-left herbaria-section-heading"><h1>Plantas</h1><p>Conheça e organize as plantas do seu herbário.</p></div>
+{% if perms.plantas.add_planta %}<div class="page-actions"><a class="btn alazea-btn" href="{% url 'plantas:planta_criar' %}">Nova planta</a></div>{% endif %}
+{% include "Plantas/componentes/busca_tabela.html" %}
+<div class="row herbaria-gallery">
 {% for planta in plantas %}
-<tr><td>{{ planta.nome_popular }}</td><td><em>{{ planta.nome_cientifico }}</em></td><td>{{ planta.categoria|default:"Sem categoria" }}</td><td>{{ planta.data_plantio|date:"d/m/Y"|default:"—" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:planta_detalhar' planta.pk %}">Visualizar</a>{% if perms.plantas.change_planta %}<a class="botao editar" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a>{% endif %}{% if perms.plantas.delete_planta %}<a class="botao excluir" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a>{% endif %}</td></tr>
-{% empty %}<tr><td colspan="5">Nenhuma planta cadastrada.</td></tr>{% endfor %}
-</tbody></table></div>
+  {% include "Plantas/componentes/card_planta.html" %}
+{% empty %}<div class="col-12"><p class="alert alert-info">{% if q %}Nenhum resultado para “{{ q }}”.{% else %}Nenhuma planta cadastrada.{% endif %}</p></div>{% endfor %}
+</div>
+{% include "Plantas/componentes/paginacao.html" %}
 {% endblock %}

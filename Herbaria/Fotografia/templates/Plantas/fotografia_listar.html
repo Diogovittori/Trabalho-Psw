@@ -1,12 +1,13 @@
 {% extends "Plantas/base.html" %}
 {% block title %}Fotografias | Herbaria{% endblock %}
 {% block content %}
-<h2>Fotografias</h2>
-{% if perms.fotografia.add_fotografia %}<div class="page-actions"><a class="btn btn-success" href="{% url 'plantas:fotografia_criar' %}">Nova fotografia</a></div>{% endif %}
-<div class="table-responsive"><table class="table table-hover">
-<thead><tr><th scope="col">Imagem</th><th scope="col">Planta</th><th scope="col">Data</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead><tbody>
+<div class="section-heading text-left herbaria-section-heading"><h1>Fotografias</h1><p>Acompanhe em imagens a evolução das suas plantas.</p></div>
+{% if perms.fotografia.add_fotografia %}<div class="page-actions"><a class="btn alazea-btn" href="{% url 'plantas:fotografia_criar' %}">Nova fotografia</a></div>{% endif %}
+{% include "Plantas/componentes/busca_tabela.html" %}
+<div class="row herbaria-gallery">
 {% for fotografia in fotografias %}
-<tr><td><img class="herbaria-list-thumb" src="{{ fotografia.imagem.url }}" alt="{{ fotografia.planta.nome_popular }}"></td><td>{{ fotografia.planta }}</td><td>{{ fotografia.data_foto|date:"d/m/Y" }}</td><td class="acoes-tabela"><a class="botao visualizar" href="{% url 'plantas:fotografia_detalhar' fotografia.pk %}">Visualizar</a>{% if perms.fotografia.change_fotografia %}<a class="botao editar" href="{% url 'plantas:fotografia_editar' fotografia.pk %}">Editar</a>{% endif %}{% if perms.fotografia.delete_fotografia %}<a class="botao excluir" href="{% url 'plantas:fotografia_excluir' fotografia.pk %}">Excluir</a>{% endif %}</td></tr>
-{% empty %}<tr><td colspan="4">Nenhuma fotografia cadastrada.</td></tr>{% endfor %}
-</tbody></table></div>
+  {% include "Plantas/componentes/card_fotografia.html" %}
+{% empty %}<div class="col-12"><p class="alert alert-info">{% if q %}Nenhum resultado para “{{ q }}”.{% else %}Nenhuma fotografia cadastrada.{% endif %}</p></div>{% endfor %}
+</div>
+{% include "Plantas/componentes/paginacao.html" %}
 {% endblock %}

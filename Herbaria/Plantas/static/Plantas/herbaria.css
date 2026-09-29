@@ -11,6 +11,37 @@ body {
   color: #707070;
 }
 
+/* Cards reutilizam product-img/product-info; a pesquisa usa input-group do Bootstrap. */
+.herbaria-record { width: 100%; }
+.herbaria-record .herbaria-card-image { display: block; height: 230px; background: #eaf1e5; overflow: hidden; }
+.herbaria-record .herbaria-card-image img { width: 100%; height: 100%; object-fit: cover; }
+.herbaria-record .herbaria-photo-image { height: 280px; }
+.herbaria-record .herbaria-photo-image img { object-fit: contain; }
+.herbaria-record .herbaria-card-image > a { height: 100%; position: relative; }
+.herbaria-image-empty { display: flex; min-height: 200px; height: 100%; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #466139; background: #edf3e8; }
+.herbaria-image-empty .fa { font-size: 42px; }
+.herbaria-record .product-info h2 a { font-size: inherit; color: #303030; }
+.herbaria-record .product-info h2 a:hover { color: #477b36; }
+.herbaria-card-category { color: #477b36; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.herbaria-scientific { color: #64725c; }
+.herbaria-card-meta { display: flex; gap: 12px; font-size: 14px; }
+.herbaria-card-actions { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid #e5ebe1; }
+.herbaria-zoom { position: absolute; bottom: 12px; right: 12px; background: rgba(20,40,20,.85); color: white; padding: 6px 12px; border-radius: 3px; font-size: 13px; }
+.herbaria-search { width: 100%; max-width: 560px; }
+.herbaria-search-form { margin: 0; }
+.herbaria-search-form label { display: block; margin-bottom: 8px; color: #303030; font-size: 14px; font-weight: 600; }
+.herbaria-search-form .input-group { flex-wrap: nowrap; }
+.herbaria-search-form .input-group > .form-control { min-width: 0; height: 44px; padding: 10px 12px; font-size: 15px; border: 1px solid #cbd8c3; border-radius: 4px 0 0 4px; }
+.herbaria-search-form .input-group-append { flex-shrink: 0; }
+.herbaria-main .herbaria-search-form .input-group-append > .btn { height: 44px; padding: 0 16px; border-radius: 0 4px 4px 0; font-size: 14px; font-weight: 600; background: #477b36; border-color: #477b36; color: #fff; text-transform: none; }
+.herbaria-main .herbaria-search-form .input-group-append > .btn:hover { background: #315b22; border-color: #315b22; }
+.herbaria-search-help { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; margin-top: 8px; }
+.herbaria-search-help small { line-height: 1.45; }
+.herbaria-search-help a { flex-shrink: 0; font-size: 14px; text-decoration: underline; }
+.herbaria-record p, .herbaria-record h2 { overflow-wrap: anywhere; }
+.herbaria-main .pagination .page-link { width: auto; min-width: 42px; padding: 0 14px; }
+.herbaria-main .pagination .active .page-link { background: #477b36; border-color: #477b36; color: white; }
+
 body.herbaria-auth-page {
   background-image: linear-gradient(rgba(243, 248, 239, .88), rgba(243, 248, 239, .88)), url("alazea/img/bg-img/6.jpg");
 }
@@ -239,7 +270,7 @@ a:focus-visible, button:focus-visible {
   color: #303030;
   font-weight: 600;
 }
-.herbaria-main input:not([type=checkbox]):not([type=radio]):not([type=submit]),
+.herbaria-main form:not(.search-form) input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=submit]),
 .herbaria-main select,
 .herbaria-main textarea {
   display: block;
@@ -274,7 +305,7 @@ a:focus-visible, button:focus-visible {
   color: #a83232;
   font-weight: 600;
 }
-.herbaria-main form button[type=submit] {
+.herbaria-main form:not(.search-form) button[type=submit] {
   min-height: 42px;
   padding: .55rem 1.25rem;
   border: 1px solid #70c745;
@@ -286,7 +317,7 @@ a:focus-visible, button:focus-visible {
   font-weight: 600;
   text-transform: uppercase;
 }
-.herbaria-main form button[type=submit]:hover { background: #5aa936; }
+.herbaria-main form:not(.search-form) button[type=submit]:hover { background: #5aa936; }
 .detalhes {
   padding: 1.5rem;
   border: 1px solid #e5ebe1;
@@ -318,6 +349,41 @@ a:focus-visible, button:focus-visible {
 }
 .herbaria-footer small { font-size: 14px; }
 .herbaria-footer a { color: #477b36; }
+
+/* Componentes Alazea/Bootstrap: adaptações específicas do sistema. */
+body { background: #f6f8f4; }
+.herbaria-banner {
+  padding: 48px 0;
+  background: linear-gradient(90deg, rgba(22, 46, 29, .92), rgba(22, 46, 29, .45)),
+    url("alazea/img/bg-img/1.jpg") center 45% / cover;
+}
+.herbaria-banner-kicker { color: #a4e181; }
+.herbaria-banner-title { color: #fff; font-size: 32px; }
+.herbaria-section-heading.section-heading { margin-bottom: 24px; }
+.herbaria-section-heading.section-heading h2 { font-size: 30px; margin-bottom: 8px; }
+.herbaria-nav-links .nav-link.active { color: #355e26; background: #edf5e8; border-radius: 4px; }
+.herbaria-main .alazea-btn { color: #17360f; }
+.herbaria-main .alazea-btn:hover, .herbaria-main .alazea-btn:focus,
+.herbaria-main form button.alazea-btn:hover, .herbaria-main form button.alazea-btn:focus { color: #fff; background: #303030; border-color: #303030; }
+.herbaria-main form button.alazea-btn { padding: 0 24px; min-height: 46px; color: #17360f; }
+.herbaria-main .form-control { font-family: inherit; height: auto; }
+.herbaria-main .form-control.is-invalid { border-color: #b84a4a; }
+.herbaria-main input[type=file] { padding: 10px; background: #f5f8f1; }
+.herbaria-main fieldset { padding: 16px; border: 1px solid #e5ebe1; margin-bottom: 20px; }
+.herbaria-main legend { font-size: 18px; width: auto; padding: 0 6px; }
+.herbaria-main input[type=checkbox], .herbaria-main input[type=radio] { accent-color: #477b36; }
+.herbaria-main input[type=checkbox]:focus-visible, .herbaria-main input[type=radio]:focus-visible { outline: 2px solid #477b36; outline-offset: 3px; }
+.herbaria-main .botao.visualizar { background: #edf5e8; color: #355e26; border-color: #c7dbbd; }
+.herbaria-main .botao.editar { background: #f4f5f3; color: #424b3d; border-color: #d8ddd4; }
+.herbaria-main .botao.excluir { background: #fff3f2; color: #943c3c; border-color: #edcfcb; }
+.herbaria-main .botao:hover { filter: brightness(.94); }
+.portfolio-img { display: block; cursor: zoom-in; }
+.portfolio-img:focus-visible { outline: 3px solid #477b36; outline-offset: -3px; }
+.herbaria-main .table td { overflow-wrap: anywhere; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
 
 @media (max-width: 991.98px) {
   .herbaria-header .navbar {

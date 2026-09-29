@@ -7,7 +7,7 @@
   <title>{% block title %}Herbaria{% endblock %}</title>
   <link rel="icon" href="{% static 'Plantas/alazea/img/core-img/favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'Plantas/alazea/style.css' %}">
-  <link rel="stylesheet" href="{% static 'Plantas/herbaria.css' %}">
+  <link rel="stylesheet" href="{% static 'Plantas/herbaria.css' %}?v=cards-search-2">
 </head>
 <body class="{% block body_class %}{% endblock %}">
 <a class="sr-only sr-only-focusable" href="#conteudo">Ir para o conteúdo</a>
@@ -21,10 +21,11 @@
       aria-controls="menu" aria-expanded="false" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="menu">
       <div class="navbar-nav herbaria-nav-links">
-        <a class="nav-link" href="{% url 'plantas:planta_listar' %}">Plantas</a>
-        <a class="nav-link" href="{% url 'plantas:categoria_listar' %}">Categorias</a>
-        <a class="nav-link" href="{% url 'plantas:cuidado_listar' %}">Cuidados</a>
-        <a class="nav-link" href="{% url 'plantas:fotografia_listar' %}">Fotografias</a>
+        {% if user.is_authenticated %}<a class="nav-link{% if request.resolver_match.url_name == 'pesquisar' %} active{% endif %}" href="{% url 'plantas:pesquisar' %}" {% if request.resolver_match.url_name == 'pesquisar' %}aria-current="page"{% endif %}><i class="fa fa-search mr-1" aria-hidden="true"></i>Pesquisar</a>{% endif %}
+        <a class="nav-link{% if 'planta_' in request.resolver_match.url_name %} active{% endif %}" {% if 'planta_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:planta_listar' %}"><i class="fa fa-leaf mr-1" aria-hidden="true"></i>Plantas</a>
+        <a class="nav-link{% if 'categoria_' in request.resolver_match.url_name %} active{% endif %}" {% if 'categoria_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:categoria_listar' %}"><i class="fa fa-tags mr-1" aria-hidden="true"></i>Categorias</a>
+        <a class="nav-link{% if 'cuidado_' in request.resolver_match.url_name %} active{% endif %}" {% if 'cuidado_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:cuidado_listar' %}"><i class="fa fa-tint mr-1" aria-hidden="true"></i>Cuidados</a>
+        <a class="nav-link{% if 'fotografia_' in request.resolver_match.url_name %} active{% endif %}" {% if 'fotografia_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:fotografia_listar' %}"><i class="fa fa-camera mr-1" aria-hidden="true"></i>Fotografias</a>
       </div>
       {% if user.is_authenticated %}
         <div class="herbaria-account">
@@ -61,6 +62,8 @@
 <script src="{% static 'Plantas/alazea/js/jquery/jquery-2.2.4.min.js' %}"></script>
 <script src="{% static 'Plantas/alazea/js/bootstrap/popper.min.js' %}"></script>
 <script src="{% static 'Plantas/alazea/js/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'Plantas/alazea/js/plugins/plugins.js' %}"></script>
+<script src="{% static 'Plantas/herbaria.js' %}?v=cards-search-2"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

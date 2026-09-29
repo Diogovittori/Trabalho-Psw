@@ -8,6 +8,7 @@ from . import views
 app_name = "plantas"
 
 urlpatterns = [
+    path("pesquisa/", views.pesquisar, name="pesquisar"),
     path("", views.inicio, name="inicio"),
     path("categorias/", categoria_views.categoria_listar, name="categoria_listar"),
     path("categorias/nova/", categoria_views.categoria_criar, name="categoria_criar"),

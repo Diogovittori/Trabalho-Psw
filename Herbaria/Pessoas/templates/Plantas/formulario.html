@@ -1,10 +1,12 @@
 {% extends "Plantas/base.html" %}
+{% load herbaria_ui %}
 {% block title %}{{ titulo }} | Herbaria{% endblock %}
 {% block content %}
 <h2>{{ titulo }}</h2>
 <form method="post"{% if multipart %} enctype="multipart/form-data"{% endif %}>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar</button>
+    {{ form|bootstrap_form }}
+    <button class="btn alazea-btn" type="submit">Salvar</button>
+    {% url_listagem as voltar %}<a class="btn btn-outline-secondary ml-2" href="{{ voltar }}">Cancelar</a>
 </form>
 {% endblock %}

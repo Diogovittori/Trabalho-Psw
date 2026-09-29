@@ -1,4 +1,5 @@
 {% extends "Plantas/base.html" %}
+{% load herbaria_ui %}
 {% block title %}{{ titulo }} | Herbaria{% endblock %}
 {% block body_class %}herbaria-auth-page{% endblock %}
 {% block content %}
@@ -11,7 +12,7 @@
     {% for field in form %}
         <p>
             {{ field.label_tag }}
-            {{ field }}
+            {{ field|bootstrap_field }}
             {% for error in field.errors %}
                 <span class="erro">{{ error }}</span>
             {% endfor %}
@@ -20,6 +21,6 @@
             {% endif %}
         </p>
     {% endfor %}
-    <button type="submit">Cadastrar</button>
+    <button class="btn alazea-btn" type="submit">Cadastrar</button>
 </form>
 {% endblock %}

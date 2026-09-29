@@ -1,0 +1,23 @@
+{% load herbaria_ui %}
+<div class="col-12 col-sm-6 col-lg-4 mb-4">
+  <article class="single-product-area card herbaria-record h-100">
+    {% with foto=planta.fotografias.all.0 %}{% with imagem=foto.imagem|imagem_url %}
+    <a class="product-img herbaria-card-image" href="{% url 'plantas:planta_detalhar' planta.pk %}" aria-label="Visualizar {{ planta.nome_popular }}">
+      {% if imagem %}<img src="{{ imagem }}" alt="{{ planta.nome_popular }}" loading="lazy">
+      {% else %}<span class="herbaria-image-empty"><i class="fa fa-leaf" aria-hidden="true"></i><span>Sem fotografia</span></span>{% endif %}
+    </a>
+    {% endwith %}{% endwith %}
+    <div class="product-info card-body d-flex flex-column">
+      <span class="herbaria-card-category">{{ planta.categoria|default:"Sem categoria" }}</span>
+      <h2 class="h4"><a href="{% url 'plantas:planta_detalhar' planta.pk %}">{{ planta.nome_popular }}</a></h2>
+      <p class="herbaria-scientific"><em>{{ planta.nome_cientifico }}</em></p>
+      <p>{{ planta.descricao|truncatechars:140 }}</p>
+      <dl class="herbaria-card-meta"><dt>Plantio</dt><dd>{{ planta.data_plantio|date:"d/m/Y"|default:"Não informado" }}</dd></dl>
+      <div class="herbaria-card-actions mt-auto">
+        <a class="btn btn-sm btn-outline-success" href="{% url 'plantas:planta_detalhar' planta.pk %}">Visualizar</a>
+        {% if perms.plantas.change_planta %}<a class="btn btn-sm btn-outline-secondary" href="{% url 'plantas:planta_editar' planta.pk %}">Editar</a>{% endif %}
+        {% if perms.plantas.delete_planta %}<a class="btn btn-sm btn-outline-danger" href="{% url 'plantas:planta_excluir' planta.pk %}">Excluir</a>{% endif %}
+      </div>
+    </div>
+  </article>
+</div>
