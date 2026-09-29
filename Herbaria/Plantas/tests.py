@@ -1,6 +1,9 @@
 from datetime import date
 from io import StringIO
+from importlib import import_module
 
+from django.apps import apps
+from django.db import connection
 from django.contrib.auth.models import Group, Permission, User
 from django.core.management import call_command
 from django.test import TestCase
@@ -172,6 +175,72 @@ class PlantaViewTests(TestCase):
         self.assertRedirects(resposta, reverse("plantas:planta_listar"))
         self.assertTrue(Planta.objects.filter(nome_popular="Hortelã").exists())
 
+    def test_nomes_no_cadastro_edicao_e_exibicao(self):
+        resposta = self.client.get(reverse("plantas:planta_criar"))
+        form = resposta.context["form"]
+        self.assertEqual(list(form.fields)[:2], ["nome_popular", "nome_cientifico"])
+        for campo, rotulo in (("nome_popular", "Nome popular"),
+                              ("nome_cientifico", "Nome científico")):
+            self.assertContains(resposta, f'<label for="id_{campo}">{rotulo}:</label>', html=True)
+
+        dados = {"nome_popular": "Rosa", "nome_cientifico": "Rosa rubiginosa",
+                 "descricao": "Roseira.", "categoria": self.categoria.pk}
+        resposta = self.client.post(reverse("plantas:planta_criar"), dados)
+        self.assertRedirects(resposta, reverse("plantas:planta_listar"))
+        planta = Planta.objects.get()
+
+        for popular, cientifico in (("Rosa", "Rosa rubiginosa"),
+                                   ("Girassol", "Helianthus annuus")):
+            with self.subTest(popular=popular):
+                if popular == "Girassol":
+                    dados.update(nome_popular=popular, nome_cientifico=cientifico)
+                    resposta = self.client.post(
+                        reverse("plantas:planta_editar", args=[planta.pk]), dados)
+                    self.assertRedirects(resposta, reverse("plantas:planta_listar"))
+                planta.refresh_from_db()
+                self.assertEqual(planta.nome_popular, popular)
+                self.assertEqual(planta.nome_cientifico, cientifico)
+                self.assertEqual(str(planta), f"{popular} ({cientifico})")
+                resposta = self.client.get(reverse("plantas:planta_editar", args=[planta.pk]))
+                form = resposta.context["form"]
+                for campo, valor in (("nome_popular", popular), ("nome_cientifico", cientifico)):
+                    self.assertEqual(form[campo].value(), valor)
+                    self.assertContains(resposta, str(form[campo]), html=True)
+                resposta = self.client.get(reverse("plantas:planta_listar"))
+                self.assertContains(resposta, f"<td>{popular}</td>", html=True)
+                self.assertContains(resposta, f"<td><em>{cientifico}</em></td>", html=True)
+                resposta = self.client.get(reverse("plantas:planta_detalhar", args=[planta.pk]))
+                self.assertContains(resposta, f"<h1>{popular}</h1>", html=True)
+                self.assertContains(resposta, f'<dd class="col-sm-8"><em>{cientifico}</em></dd>', html=True)
+                resposta = self.client.get(reverse("plantas:categoria_detalhar", args=[self.categoria.pk]))
+                self.assertContains(resposta, f'<h3 class="h5">{popular}</h3>', html=True)
+                self.assertContains(resposta, f"<p><em>{cientifico}</em></p>", html=True)
+
+    def test_correcao_dos_dados_preserva_nomes_corretos_e_outros_registros(self):
+        pares = [("Girassol", "Helianthus annuus"),
+                 ("Orquídea", "Phalaenopsis amabilis"), ("Rosa", "Rosa × hybrida")]
+        esperados = []
+        for popular, cientifico in pares:
+            for invertido in (True, False):
+                planta = Planta.objects.create(
+                    nome_popular=cientifico if invertido else popular,
+                    nome_cientifico=popular if invertido else cientifico,
+                    descricao="Preservar descrição.", categoria=self.categoria)
+                esperados.append((planta, popular, cientifico))
+        outra = Planta.objects.create(nome_popular="Rosa", nome_cientifico="Rosa rubiginosa",
+                                      descricao="Outra espécie.")
+        corrigir = import_module("Plantas.migrations.0009_corrigir_nomes_invertidos").corrigir_nomes
+        editor = connection.schema_editor()
+        corrigir(apps, editor)
+        corrigir(apps, editor)
+        for planta, popular, cientifico in esperados:
+            planta.refresh_from_db()
+            self.assertEqual((planta.nome_popular, planta.nome_cientifico), (popular, cientifico))
+            self.assertEqual(planta.descricao, "Preservar descrição.")
+            self.assertEqual(planta.categoria_id, self.categoria.pk)
+        outra.refresh_from_db()
+        self.assertEqual((outra.nome_popular, outra.nome_cientifico), ("Rosa", "Rosa rubiginosa"))
+
     def test_cria_cuidado(self):
         planta = Planta.objects.create(
             nome_cientifico="Aloe vera",
@@ -191,6 +260,16 @@ class PlantaViewTests(TestCase):
         self.assertRedirects(resposta, reverse("plantas:cuidado_listar"))
         cuidado = Cuidados.objects.get(planta=planta)
         self.assertEqual(list(cuidado.tipo.all()), [self.tipo])
+        self.assertEqual(cuidado.data, date(2026, 8, 23))
+        self.assertEqual(cuidado.observacoes, "Rega realizada.")
+        for _ in range(2):
+            pagina = self.client.get(reverse("plantas:cuidado_listar"))
+            self.assertEqual(list(pagina.context["cuidados"]), [cuidado])
+            self.assertContains(pagina, f"<td>{planta}</td>", html=True)
+            self.assertContains(pagina, "<td>23/08/2026</td>", html=True)
+            self.assertContains(pagina, self.tipo.nome)
+            self.assertContains(pagina, "Rega realizada.")
+            self.assertNotContains(pagina, "Nenhum cuidado cadastrado.")
 
     def test_crud_completo_das_entidades(self):
         planta = Planta.objects.create(

@@ -11,8 +11,8 @@ class PlantaForm(forms.ModelForm):
     class Meta:
         model = Planta
         fields = (
-            "nome_cientifico",
             "nome_popular",
+            "nome_cientifico",
             "descricao",
             "data_plantio",
             "categoria",

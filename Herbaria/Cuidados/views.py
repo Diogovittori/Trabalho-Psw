@@ -8,8 +8,8 @@ from .models import Cuidados
 
 @login_required
 def cuidado_listar(request):
-    cuidado = Cuidados.objects.select_related("planta")
-    return render(request, "Plantas/cuidado_listar.html", {"cuidado": cuidado})
+    cuidados = Cuidados.objects.select_related("planta")
+    return render(request, "Plantas/cuidado_listar.html", {"cuidados": cuidados})
 
 
 @login_required

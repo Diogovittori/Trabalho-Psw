@@ -4,6 +4,7 @@ from Cuidados.models import Cuidados
 from Fotografia.models import Fotografia
 
 from .models import Planta
+from .forms import PlantaForm
 
 
 class CuidadosInline(admin.TabularInline):
@@ -18,6 +19,7 @@ class FotografiaInline(admin.TabularInline):
 
 @admin.register(Planta)
 class PlantaAdmin(admin.ModelAdmin):
+    form = PlantaForm
     list_display = (
         "nome_popular", "nome_cientifico", "categoria",
         "data_plantio", "data_cadastro",
