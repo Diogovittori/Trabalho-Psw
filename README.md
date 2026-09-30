@@ -7,6 +7,13 @@ Aplicação web para organização de plantas, categorias, cuidados, fotografias
 - Diogo Vittório Cardoso Oliveira
 - Enzo Braga Martins
 
+## Link do vídeo
+
+https://youtu.be/mFLtSsqfM7I
+(Vídeo anterior removido por conta de mostrar email e cpf)
+
+Link para download do vídeo caso ele caia do Youtube novamente (https://drive.google.com/drive/folders/1c9pTiM77nKDOe4H58yPv-fI3C8r6Pz-D?usp=drive_link)
+
 ## Tecnologias
 
 | Tecnologia | Uso |
