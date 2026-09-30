@@ -54,6 +54,8 @@ def imagem_url(value):
     if not value:
         return ""
     if hasattr(value, "url"):
+        if hasattr(value, "storage") and not value.storage.exists(value.name):
+            return ""
         return value.url
     return value
 

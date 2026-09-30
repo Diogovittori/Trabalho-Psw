@@ -1,4 +1,4 @@
-{% load static %}
+{% load static pessoas_acesso %}
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -26,10 +26,10 @@
         <a class="nav-link{% if 'categoria_' in request.resolver_match.url_name %} active{% endif %}" {% if 'categoria_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:categoria_listar' %}"><i class="fa fa-tags mr-1" aria-hidden="true"></i>Categorias</a>
         <a class="nav-link{% if 'cuidado_' in request.resolver_match.url_name %} active{% endif %}" {% if 'cuidado_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:cuidado_listar' %}"><i class="fa fa-tint mr-1" aria-hidden="true"></i>Cuidados</a>
         <a class="nav-link{% if 'fotografia_' in request.resolver_match.url_name %} active{% endif %}" {% if 'fotografia_' in request.resolver_match.url_name %}aria-current="page"{% endif %} href="{% url 'plantas:fotografia_listar' %}"><i class="fa fa-camera mr-1" aria-hidden="true"></i>Fotografias</a>
+        {% if user|pode_gerenciar_pessoas %}<a class="nav-link{% if request.resolver_match.namespace == 'pessoas' %} active{% endif %}" href="{% url 'pessoas:pessoa_listar' %}" {% if request.resolver_match.namespace == 'pessoas' %}aria-current="page"{% endif %}><i class="fa fa-users mr-1" aria-hidden="true"></i>Usuários</a>{% endif %}
       </div>
       {% if user.is_authenticated %}
         <div class="herbaria-account">
-          {% if user.is_staff %}<a class="nav-link" href="{% url 'usuario_cadastrar' %}">Cadastrar usuário</a>{% endif %}
           <span class="herbaria-username">{{ user.username }}</span>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}<button class="btn btn-outline-success btn-sm" type="submit">Sair</button>

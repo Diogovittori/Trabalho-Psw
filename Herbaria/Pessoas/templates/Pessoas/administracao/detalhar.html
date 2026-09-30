@@ -1,0 +1,26 @@
+{% extends "Plantas/base.html" %}
+{% load pessoas_acesso %}
+{% block title %}Detalhes do usuário | Herbaria{% endblock %}
+{% block content %}
+<div class="section-heading text-left herbaria-section-heading"><h2>{{ pessoa.nome|default:pessoa.username }}</h2><p>Dados do usuário cadastrado.</p></div>
+<section class="card mb-4"><div class="card-body">
+<dl class="row">
+  <dt class="col-sm-4">Nome de usuário</dt><dd class="col-sm-8">{{ pessoa.username }}</dd>
+  <dt class="col-sm-4">E-mail</dt><dd class="col-sm-8">{{ pessoa.email|default:"Não informado" }}</dd>
+  <dt class="col-sm-4">CPF</dt><dd class="col-sm-8">{{ pessoa.cpf|default:"Não informado" }}</dd>
+  <dt class="col-sm-4">Data de nascimento</dt><dd class="col-sm-8">{{ pessoa.data_nascimento|date:"d/m/Y"|default:"Não informada" }}</dd>
+  <dt class="col-sm-4">Telefone</dt><dd class="col-sm-8">{{ pessoa.telefone|default:"Não informado" }}</dd>
+  <dt class="col-sm-4">Número do endereço</dt><dd class="col-sm-8">{{ pessoa.numero|default_if_none:"Não informado" }}</dd>
+  <dt class="col-sm-4">Bairro</dt><dd class="col-sm-8">{{ pessoa.bairro|default:"Não informado" }}</dd>
+  <dt class="col-sm-4">Cidade</dt><dd class="col-sm-8">{{ pessoa.cidade|default:"Não informada" }}</dd>
+  <dt class="col-sm-4">Estado</dt><dd class="col-sm-8">{{ pessoa.estado|default:"Não informado" }}</dd>
+  <dt class="col-sm-4">CEP</dt><dd class="col-sm-8">{{ pessoa.cep|default_if_none:"Não informado" }}</dd>
+  {% if funcionario %}<dt class="col-sm-4">Plantas vinculadas</dt><dd class="col-sm-8"><ul>{% for planta in pessoa.plantas.all %}<li>{{ planta }}</li>{% empty %}<li>Nenhuma planta vinculada.</li>{% endfor %}</ul></dd>{% endif %}
+</dl>
+</div></section>
+<div class="acoes">
+{% if user|pode_gerenciar_pessoas:"change" %}<a class="btn btn-success" href="{% url 'pessoas:pessoa_editar' pessoa.pk %}">Editar usuário</a>{% endif %}
+{% if user|pode_gerenciar_pessoas:"delete" and pessoa.pk != user.pk %}<a class="btn btn-outline-danger" href="{% url 'pessoas:pessoa_excluir' pessoa.pk %}">Excluir usuário</a>{% endif %}
+<a class="btn btn-outline-secondary" href="{% url 'pessoas:pessoa_listar' %}">Voltar para usuários</a>
+</div>
+{% endblock %}

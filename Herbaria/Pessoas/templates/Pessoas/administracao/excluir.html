@@ -1,0 +1,12 @@
+{% extends "Plantas/base.html" %}
+{% block title %}Excluir usuário | Herbaria{% endblock %}
+{% block content %}
+<div class="section-heading text-left herbaria-section-heading"><h2>Excluir usuário</h2><p>Confirme a exclusão do cadastro abaixo.</p></div>
+<p>Deseja excluir <strong>{{ pessoa.nome|default:pessoa.username }}</strong> ({{ pessoa.username }})?</p>
+<p>A conta de acesso e seus dados pessoais serão removidos. As plantas vinculadas serão mantidas. Esta ação não pode ser desfeita.</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger" type="submit">Confirmar exclusão</button>
+  <a class="btn btn-outline-secondary" href="{% url 'pessoas:pessoa_listar' %}">Cancelar</a>
+</form>
+{% endblock %}

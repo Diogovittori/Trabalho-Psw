@@ -56,6 +56,7 @@ class CadastroPessoaTests(TestCase):
     def test_cadastro_salva_senha_e_login_funciona_sem_permissao_de_edicao(self):
         resposta = self.client.post(reverse("usuario_cadastrar"), {
             "username": "novo-observador", "nome": "Observador", "cpf": "529.982.247-25",
+            "data_nascimento": "2000-01-15", "telefone": "11999999999",
             "email": "observador@example.com", "password1": "Flor-Jardim!7832", "password2": "Flor-Jardim!7832",
         })
         self.assertRedirects(resposta, reverse("login"))

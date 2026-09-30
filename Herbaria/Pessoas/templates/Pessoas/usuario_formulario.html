@@ -5,7 +5,7 @@
 {% block content %}
 <h2>{{ titulo }}</h2>
 <p>Preencha seus dados e crie uma senha para acessar o Herbaria.</p>
-<p class="text-muted">Todos os campos são obrigatórios.</p>
+<p class="text-muted">Preencha os campos abaixo. Os campos opcionais estão identificados.</p>
 <form method="post">
     {% csrf_token %}
     {{ form|bootstrap_form }}

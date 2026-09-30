@@ -1,0 +1,12 @@
+{% extends "Plantas/base.html" %}
+{% load herbaria_ui %}
+{% block title %}Editar usuário | Herbaria{% endblock %}
+{% block content %}
+<div class="section-heading text-left herbaria-section-heading"><h2>Editar usuário</h2><p>Atualize os dados de {{ pessoa.nome|default:pessoa.username }}. Os campos opcionais estão identificados.</p></div>
+<form method="post">
+  {% csrf_token %}
+  {{ form|bootstrap_form }}
+  <button class="btn btn-success" type="submit">Salvar alterações</button>
+  <a class="btn btn-outline-secondary" href="{% url 'pessoas:pessoa_listar' %}">Cancelar</a>
+</form>
+{% endblock %}

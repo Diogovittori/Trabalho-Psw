@@ -7,6 +7,7 @@ from Pessoas import views as pessoas_views
 
 
 urlpatterns = [
+    path('pessoas/', include('Pessoas.urls')),
     path('', include('Plantas.urls')),
     path('admin/', admin.site.urls),
     path("contas/login/", pessoas_views.login_view, name="login"),

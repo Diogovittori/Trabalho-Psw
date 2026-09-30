@@ -1,0 +1,30 @@
+{% extends "Plantas/base.html" %}
+{% load pessoas_acesso %}
+{% block title %}Usuários | Herbaria{% endblock %}
+{% block content %}
+<div class="section-heading text-left herbaria-section-heading"><h2>Usuários</h2><p>Consulte e atualize os usuários cadastrados no sistema.</p></div>
+{% if user|pode_gerenciar_pessoas:"add" %}<div class="page-actions"><a class="btn alazea-btn" href="{% url 'usuario_cadastrar' %}">Cadastrar usuário</a></div>{% endif %}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead><tr><th scope="col">Nome</th><th scope="col">Usuário</th><th scope="col">E-mail</th><th scope="col">Ações</th></tr></thead>
+    <tbody>
+    {% for pessoa in pagina %}
+      <tr><td>{{ pessoa.nome|default:"Não informado" }}</td><td>{{ pessoa.username }}</td><td>{{ pessoa.email|default:"Não informado" }}</td>
+        <td class="acoes-tabela">
+          <a class="btn btn-sm btn-outline-success botao visualizar" href="{% url 'pessoas:pessoa_detalhar' pessoa.pk %}">Visualizar</a>
+          {% if user|pode_gerenciar_pessoas:"change" %}<a class="btn btn-sm btn-outline-secondary botao editar" href="{% url 'pessoas:pessoa_editar' pessoa.pk %}">Editar</a>{% endif %}
+          {% if user|pode_gerenciar_pessoas:"delete" and pessoa.pk != user.pk %}<a class="btn btn-sm btn-outline-danger botao excluir" href="{% url 'pessoas:pessoa_excluir' pessoa.pk %}">Excluir</a>{% endif %}
+        </td>
+      </tr>
+    {% empty %}<tr><td colspan="4">Nenhum usuário cadastrado.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if pagina.has_other_pages %}
+<nav aria-label="Paginação de usuários" class="d-flex flex-wrap align-items-center justify-content-between">
+  {% if pagina.has_previous %}<a class="btn btn-outline-secondary" href="?page={{ pagina.previous_page_number }}">Anterior</a>{% endif %}
+  <span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
+  {% if pagina.has_next %}<a class="btn btn-outline-secondary" href="?page={{ pagina.next_page_number }}">Próxima</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}
